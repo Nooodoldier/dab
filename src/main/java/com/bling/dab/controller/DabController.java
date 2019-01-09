@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DabController {
     @RequestMapping("/dab")
     private String dab(){
+        System.out.print("dab01");
         return "dab!";
     }
+
 }
