@@ -3,6 +3,9 @@ package com.bling.dab.service;
 import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -12,6 +15,7 @@ import javax.annotation.Resource;
  * @description:
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 public class UserService {
 
     @Resource

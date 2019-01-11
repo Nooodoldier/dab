@@ -39,7 +39,7 @@ public class DabApplicationTests {
     @Test
     public void booService() {
         User user = new User();
-        user.setId(8);
+        user.setId(9);
         user.setName("好嗨哟");
         int i = userService.saveUser(user);
         logger.info("=======save========"+(i>0));

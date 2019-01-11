@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date: 2019/1/10 17:02
  * @description:
  */
-@Mapper
+//@Mapper
 public interface UserMapper {
 
     int saveUser(User user);
