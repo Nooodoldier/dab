@@ -23,15 +23,10 @@ public class DabApplicationTests {
     private UserMapper userMapper;
     @Resource
     private UserService userService;
-    @Test
-    public void contextLoads() {
-
-    }
 
     @Test
     public void booMapper() {
         User user = new User();
-        user.setId(6);
         user.setName("好嗨哟");
         int i = userMapper.saveUser(user);
         logger.info("=======save========"+(i>0));
@@ -39,7 +34,6 @@ public class DabApplicationTests {
     @Test
     public void booService() {
         User user = new User();
-        user.setId(9);
         user.setName("好嗨哟");
         int i = userService.saveUser(user);
         logger.info("=======save========"+(i>0));
