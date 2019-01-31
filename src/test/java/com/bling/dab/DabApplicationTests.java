@@ -1,6 +1,8 @@
 package com.bling.dab;
 
 
+import com.bling.dab.common.redis.RedisApiService;
+import com.bling.dab.common.redis.RedisConfig;
 import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.UserService;
@@ -23,6 +25,8 @@ public class DabApplicationTests {
     private UserMapper userMapper;
     @Resource
     private UserService userService;
+    @Resource
+    private RedisConfig redisConfig;
 
     @Test
     public void booMapper() {
@@ -37,6 +41,20 @@ public class DabApplicationTests {
         user.setName("好嗨哟");
         int i = userService.saveUser(user);
         logger.info("=======save========"+(i>0));
+    }
+    @Test
+    public void redisService() throws Exception {
+        RedisApiService redisApiService = RedisApiService.getInstance(redisConfig);
+        boolean mykey = redisApiService.exists("mykey");
+        if(mykey){
+            String mykey1 = redisApiService.get("mykey");
+            logger.info("mykey已存在"+mykey1);
+
+        }else{
+            boolean set = redisApiService.set("mykey", "bbb");
+            logger.info("缓存bbb"+set);
+        }
+
     }
 }
 
