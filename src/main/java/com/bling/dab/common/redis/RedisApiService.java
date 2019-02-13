@@ -110,7 +110,6 @@ public class RedisApiService implements RedisApi{
      * 归还连接实例
      */
     private void returnResource(Jedis jedis) {
-        // 方法jedisPool.returnResource(jedis); 已被弃用
         if (null != jedis) {
             jedis.close();
         }
