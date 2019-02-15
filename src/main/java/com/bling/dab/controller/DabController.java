@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2019/1/9 15:35
  * @description:
  */
+@ApiIgnore
 @RestController
-@EnableAutoConfiguration
 public class DabController {
 
     private static final Logger logger = LoggerFactory.getLogger(DabController.class);

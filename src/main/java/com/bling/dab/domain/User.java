@@ -1,7 +1,8 @@
 package com.bling.dab.domain;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.ExampleMatcher;
+
+import java.util.Date;
 
 /**
  * @author: hxp
@@ -9,10 +10,14 @@ import org.springframework.data.domain.ExampleMatcher;
  * @description:
  */
 public class User {
-    @Id
+
     private int id;
 
     private String name;
+
+    private int age;
+
+    private Date ctm;
 
     public int getId() {
         return id;
@@ -30,11 +35,29 @@ public class User {
         this.name = name;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Date getCtm() {
+        return ctm;
+    }
+
+    public void setCtm(Date ctm) {
+        this.ctm = ctm;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", age=" + age +
+                ", ctm=" + ctm +
                 '}';
     }
 }
