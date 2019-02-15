@@ -5,11 +5,15 @@ import com.bling.dab.domain.User;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author: hxp
@@ -40,13 +44,26 @@ public class UserMongo {
      * MongoTemplate核心操作类：Criteria和Query
      * Criteria类：封装所有的语句，以方法的形式查询。
      * Query类：将语句进行封装或者添加排序之类的操作。
+     * @param user
+     * @return
      */
+    public User saveUser1(User user){
+        return userRepository.save(user);
+    }
+
+    public User insertUser(User user){
+        return userRepository.insert(user);
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
 
 
     /**
      * 创建对象
      */
-    public User saveUser(User user) {
+    public User saveUser2(User user) {
         return mongoTemplate.save(user);
     }
 
@@ -54,7 +71,7 @@ public class UserMongo {
      * 根据用户名查询对象
      * @return
      */
-    public User findByName(String name) {
+    public User findTestByName(String name) {
         Query query=new Query(Criteria.where("name").is(name));
         User mgt =  mongoTemplate.findOne(query , User.class);
         return mgt;
@@ -71,6 +88,7 @@ public class UserMongo {
         //更新查询返回结果集的所有
         // mongoTemplate.updateMulti(query,update,TestEntity.class);
         return result.wasAcknowledged();
+
     }
 
     /**
@@ -79,9 +97,8 @@ public class UserMongo {
      */
     public boolean deleteUserById(Integer id) {
         Query query=new Query(Criteria.where("id").is(id));
-        DeleteResult remove = mongoTemplate.remove(query, User.class);
-        return remove.wasAcknowledged();
+        DeleteResult result = mongoTemplate.remove(query, User.class);
+        return result.wasAcknowledged();
     }
-
 
 }
