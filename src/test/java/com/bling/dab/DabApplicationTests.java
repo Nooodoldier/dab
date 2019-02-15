@@ -43,18 +43,20 @@ public class DabApplicationTests {
         logger.info("=======save========"+(i>0));
     }
     @Test
-    public void redisService() throws Exception {
+    public void redisService(){
         RedisUtil redisUtil = RedisUtil.getInstance(redisConfig);
         boolean mykey = redisUtil.exists("mykey");
         if(mykey){
             String mykey1 = redisUtil.get("mykey");
-            logger.info("mykey已存在"+mykey1);
-
-        }else{
-            String r = redisUtil.set("mykey", "bbb");
-            logger.info("缓存bbb"+r);
+            logger.info("mykey已存在："+mykey1);
+            Long expire = redisUtil.expire("mykey", 60 * 60 * 24);
+            logger.info("设置mykey的超时时间："+expire);
+            String type = redisUtil.type("mykey");
+            logger.info("mykey的类型："+type);
         }
 
     }
+
+
 }
 

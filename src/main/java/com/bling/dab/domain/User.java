@@ -1,11 +1,14 @@
 package com.bling.dab.domain;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * @author: hxp
  * @date: 2019/1/10 16:42
  * @description:
  */
 public class User {
+    @Id
     private int id;
 
     private String name;
