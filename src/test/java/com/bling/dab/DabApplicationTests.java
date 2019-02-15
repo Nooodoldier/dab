@@ -66,8 +66,9 @@ public class DabApplicationTests {
     @Test
     public void saveUser1(){
         User user = new User();
-        user.setId(0);
+        user.setId(7);
         user.setName("张浩");
+        user.setAge(10);
         User saveUser = userMongo.saveUser1(user);
         logger.info("mongodb新增："+ JSON.toJSONString(saveUser));
     }
