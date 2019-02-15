@@ -1,6 +1,6 @@
 package com.bling.dab.service;
 
-import com.bling.dab.dao.UserRepository;
+import com.bling.dab.mongo.UserRepository;
 import com.bling.dab.domain.User;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * @date: 2019/2/15 16:24
  * @description:
  */
-@Component
+@Service
 public class UserMongo {
 
     @Autowired
@@ -59,6 +60,15 @@ public class UserMongo {
         return userRepository.findAll();
     }
 
+    public List<User> findUserSort(User user){
+
+        // Sort sort = new Sort(Sort.Direction.ASC, "id").and(new Sort(Sort.Direction.ASC, "name"));//多条件DEVID、time
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        //查询条件
+        Criteria criteria = Criteria.where("name").is(user.getName());
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query.with(sort).limit(1000), User.class);
+    }
 
     /**
      * 创建对象
@@ -71,7 +81,7 @@ public class UserMongo {
      * 根据用户名查询对象
      * @return
      */
-    public User findTestByName(String name) {
+    public User findUserByName(String name) {
         Query query=new Query(Criteria.where("name").is(name));
         User mgt =  mongoTemplate.findOne(query , User.class);
         return mgt;

@@ -1,6 +1,7 @@
 package com.bling.dab.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.ExampleMatcher;
 
 /**
  * @author: hxp
