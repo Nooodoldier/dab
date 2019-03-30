@@ -29,7 +29,6 @@ import java.util.List;
  * @date: 2019/3/28 17:47
  * @description:
  */
-@Slf4j
 @Service
 @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 public class BatchService {
