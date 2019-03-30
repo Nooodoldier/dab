@@ -19,8 +19,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class BatchService {
     private BatchMapper batchMapper;
     /**
      * 导出数据
-     * @return
+     * @return HttpServletResponse
      */
-    public int batchExport() {
+    public int batchExport(HttpServletResponse response) {
         int result = 1;
         HSSFWorkbook wb = new HSSFWorkbook();
         logger.info("开始");
@@ -102,15 +103,47 @@ public class BatchService {
             }
         }
         FileOutputStream out = null;
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        String filePath = "D:/dabFile/";
+        String fileZipPath = "D:/dabZipFile/";
         try {
-            String filePath = "D:/dabFile/";
+            File path = new File(filePath);
+            if(!path.exists()){
+                path.mkdirs();
+            }
             String fileName = "dab"+System.currentTimeMillis();
             out = new FileOutputStream(filePath+fileName+".xls");
             wb.write(out);
-            String fileZipPath = "D:/dabZipFile/";
+
             String fileZipName = "dab"+System.currentTimeMillis();
-            ZipCompress zipCom = new ZipCompress(fileZipPath+fileZipName+".zip",filePath);
+            ZipCompress zipCom = new ZipCompress(fileZipPath+fileZipName+".zip",filePath+fileName+".xls");
             zipCom.zip();
+
+            File file = new File(fileZipPath+fileZipName+".zip");
+            if(file.exists()){
+                logger.info("下载开始.....");
+                // 设置强制下载不打开
+                response.setContentType("application/force-download");
+                // 设置文件名
+                response.addHeader("Content-Disposition", "attachment;fileName=" + fileZipName+".zip");
+
+                byte[] buffer = new byte[1024];
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                logger.info("开始读取.."+i);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                    logger.info("读取中.."+i);
+                }
+                logger.info("下载成功.....");
+
+            }else{
+                logger.info("下载失败！");
+            }
         } catch (Exception e) {
             logger.error("接口内部错误",e);
             throw new MyException("接口内部错误",e);
@@ -119,13 +152,57 @@ public class BatchService {
             if(out != null){
                 try {
                     out.close();
-                    logger.info("关闭输出流");
+                    logger.info("关闭out输出流");
                 } catch (IOException e) {
-                    logger.error("接口内部错误",e);
-                    throw new MyException("接口内部错误",e);
+                    logger.error("接口内部错误out",e);
+                    throw new MyException("接口内部错误out",e);
                 }
             }
+            if (bis != null) {
+                try {
+                    bis.close();
+                    logger.info("关闭bis输出流");
+                } catch (IOException e) {
+                    logger.error("接口内部错误bis",e);
+                    throw new MyException("接口内部错误bis",e);
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                    logger.info("关闭fis输出流");
+                } catch (IOException e) {
+                    logger.error("接口内部错误fis",e);
+                    throw new MyException("接口内部错误fis",e);
+                }
+            }
+            deleteDir(fileZipPath);
+            deleteDir(filePath);
         }
         return result;
     }
+
+    private  boolean deleteDir(String dir) {
+        File file = new File(dir);
+        boolean delete ;
+        if (file.isDirectory()) {
+            String[] children = file.list();
+            if(children.length>0){
+                /**递归删除目录中的子目录下*/
+                for (int i=0; i<children.length; i++) {
+                    boolean success = deleteDir(file.getPath()+"/"+children[i]);
+                    if (!success) {
+                        return false;
+                    }
+                }
+            }
+            delete = file.delete();
+            logger.info("删除目录"+delete);
+        }else {
+            delete = file.delete();
+            logger.info("删除文件"+delete);
+        }
+        return delete;
+    }
+
 }

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author: hxp
@@ -33,8 +33,7 @@ public class FileController {
     }
 
     @RequestMapping(value = "/batchExport")
-    public String batchExport() {
-        batchService.batchExport();
-        return "forward:/file";
+    public void batchExport(HttpServletResponse response) {
+        batchService.batchExport(response);
     }
 }
