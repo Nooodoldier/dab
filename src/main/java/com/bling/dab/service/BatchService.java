@@ -108,6 +108,7 @@ public class BatchService {
         String filePath = "D:/dabFile/";
         String fileZipPath = "D:/dabZipFile/";
         try {
+            //创建excel文件
             File path = new File(filePath);
             if(!path.exists()){
                 path.mkdirs();
@@ -115,11 +116,11 @@ public class BatchService {
             String fileName = "dab"+System.currentTimeMillis();
             out = new FileOutputStream(filePath+fileName+".xls");
             wb.write(out);
-
+            //压缩为zip文件
             String fileZipName = "dab"+System.currentTimeMillis();
             ZipCompress zipCom = new ZipCompress(fileZipPath+fileZipName+".zip",filePath+fileName+".xls");
             zipCom.zip();
-
+            //下载zip文件
             File file = new File(fileZipPath+fileZipName+".zip");
             if(file.exists()){
                 logger.info("下载开始.....");
@@ -176,6 +177,7 @@ public class BatchService {
                     throw new MyException("接口内部错误fis",e);
                 }
             }
+            //删除数据文件
             deleteDir(fileZipPath);
             deleteDir(filePath);
         }
