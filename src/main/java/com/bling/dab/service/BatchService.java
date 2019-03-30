@@ -40,7 +40,7 @@ public class BatchService {
     private BatchMapper batchMapper;
     /**
      * 导出数据
-     * @return HttpServletResponse
+     * @return
      */
     public int batchExport(HttpServletResponse response) {
         int result = 1;
