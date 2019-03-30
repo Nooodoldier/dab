@@ -112,7 +112,6 @@ public class BatchService {
             String fileZipName = "dab"+System.currentTimeMillis();
             ZipCompress zipCom = new ZipCompress(fileZipPath+fileZipName+".zip",filePath);
             zipCom.zip();
-            String mail = "15810665479@163.com";
         } catch (Exception e) {
             logger.error("接口内部错误",e);
             throw new MyException("接口内部错误",e);
