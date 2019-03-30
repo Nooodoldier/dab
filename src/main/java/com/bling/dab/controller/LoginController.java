@@ -18,10 +18,9 @@ public class LoginController {
     @RequestMapping(value="/index")
     public ModelAndView index(){
         User user = new User();
-        user.setName("tom");
-        user.setAge(10);
+        User tom = User.builder().name("tom").age(10).build();
         ModelAndView mv = new ModelAndView();
-        mv.addObject("user", user);
+        mv.addObject("user", tom);
         mv.setViewName("/index.html");
         return mv;
     }
