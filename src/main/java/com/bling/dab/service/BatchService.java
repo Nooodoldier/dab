@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author: hxp
@@ -126,11 +127,12 @@ public class BatchService {
             if(!path.exists()){
                 path.mkdirs();
             }
-            String fileName = "dab"+System.currentTimeMillis();
+            Integer random = new Random().nextInt(1000);
+            String fileName = "dab"+System.currentTimeMillis()+random;
             out = new FileOutputStream(filePath+fileName+".xls");
             wb.write(out);
             //压缩为zip文件
-            String fileZipName = "dab"+System.currentTimeMillis();
+            String fileZipName = "dab"+System.currentTimeMillis()+random;
             ZipCompress zipCom = new ZipCompress(fileZipPath+fileZipName+".zip",filePath+fileName+".xls");
             zipCom.zip();
             //下载zip文件
