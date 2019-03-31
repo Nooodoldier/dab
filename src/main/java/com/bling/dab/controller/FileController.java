@@ -27,9 +27,8 @@ public class FileController {
     
     @RequestMapping(value = "/batchImport")
     public String batchImport(MultipartFile file) {
-        String originalFilename = file.getOriginalFilename();
-        
-        return null;
+        batchService.batchImport(file);
+        return "forward:/file";
     }
 
     @RequestMapping(value = "/batchExport")

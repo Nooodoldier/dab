@@ -1,6 +1,8 @@
 package com.bling.dab.dao;
 
 import com.bling.dab.domain.BatchData;
+import com.bling.dab.domain.Car;
+import com.bling.dab.domain.User;
 
 import java.util.List;
 
@@ -13,4 +15,8 @@ import java.util.List;
 public interface BatchMapper {
 
     List<BatchData> selectBatchData();
+
+    int addUser(User user);
+
+    int addCar(Car car);
 }

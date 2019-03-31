@@ -6,4 +6,11 @@
         select id,name,age,cid,car_name carName,car_price carPrice from t_user u,t_car c where u.id = c.uid
     </select>
 
+    <insert id="addUser" parameterType="com.bling.dab.domain.User">
+        insert into t_user(id,name,age) values(#{id},#{name},#{age})
+    </insert>
+
+    <insert id="addCar" parameterType="com.bling.dab.domain.Car">
+        insert into t_car(cid,uid,car_name,car_price) values(#{cid},#{uid},#{carName},#{carPrice})
+    </insert>
 </mapper>
