@@ -9,5 +9,5 @@ import com.bling.dab.domain.SignIn;
  */
 public interface SignInMapper {
 
-    SignIn querySignIn();
+    SignIn querySignIn(SignIn in);
 }

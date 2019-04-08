@@ -2,6 +2,7 @@ package com.bling.dab.service;
 
 import com.bling.dab.dao.SignInMapper;
 import com.bling.dab.domain.SignIn;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignInService {
 
+    @Autowired
     private SignInMapper signInMapper;
 
-    public SignIn querySignIn(){
-        return signInMapper.querySignIn();
+    public SignIn querySignIn(SignIn in){
+        return signInMapper.querySignIn(in);
     }
 }

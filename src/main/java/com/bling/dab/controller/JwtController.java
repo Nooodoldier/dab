@@ -3,15 +3,15 @@ package com.bling.dab.controller;
 import com.bling.dab.domain.SignIn;
 import com.bling.dab.service.SignInService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by Administrator on 2019/2/23 0023.
  */
 @ApiIgnore
-@RestController
+@Controller
 public class JwtController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class JwtController {
 
     @RequestMapping(value="/signIn")
     public String signIn(SignIn in){
-        SignIn signIn = signInService.querySignIn();
+        SignIn signIn = signInService.querySignIn(in);
         if(null != signIn){
             return "success.html";
         }
