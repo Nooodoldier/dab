@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show User</title>
+</head>
+<body>
+    <div >
+        <table>
+            <th:block>
+                <form id="file_form" action="http://localhost:8080/signIn" method="post">
+                        <input type="text" name="userName" id="userName">
+                        <input type="text" name="password" id="password">
+                        <input type="submit" th:value="登陆">
+                        <input type="reset" th:value="重置">
+                </form> 
+            </th:block>
+        </table>
+         
+    </div>
+</body>
+</html>
