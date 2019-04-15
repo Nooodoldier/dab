@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2019/2/21 19:52
  * @description:
  */
+@ApiIgnore
 @Controller
 public class FileController {
 

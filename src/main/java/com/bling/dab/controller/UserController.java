@@ -1,11 +1,15 @@
 package com.bling.dab.controller;
 
+import com.bling.dab.common.annotation.Log;
 import com.bling.dab.common.result.JsonResult;
+import com.bling.dab.domain.SignIn;
 import com.bling.dab.domain.User;
+import com.bling.dab.service.SignInService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -23,6 +27,29 @@ public class UserController {
 
     /**创建线程安全的Map*/
     static Map<Integer, User> users = Collections.synchronizedMap(new HashMap<Integer, User>());
+
+    @Autowired
+    private SignInService signInService;
+
+    @ApiOperation(value="", notes="根据url的name和password来获取用户详细信息")
+    @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "String", paramType = "path")
+    @RequestMapping(value = "user/{name}/{password}", method = RequestMethod.GET)
+    public ResponseEntity<JsonResult> getUserByNameAndPassword (@PathVariable(value = "name") String name ,@PathVariable(value = "password") String password){
+        JsonResult r = new JsonResult();
+        try {
+            SignIn in = new SignIn();
+            in.setUserName(name);
+            in.setPassword(password);
+            SignIn user = signInService.querySignIn(in);
+            r.setResult(user);
+            r.setStatus("ok");
+        } catch (Exception e) {
+            r.setResult(e.getClass().getName() + ":" + e.getMessage());
+            r.setStatus("error");
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(r);
+    }
 
     /**
      * 根据ID查询用户
