@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bling.dab.dao.LogMapper">
     <insert id="saveLog" parameterType="com.bling.dab.domain.Log">
-        insert into t_log(id,modelName,action,description,ip,createTime,success,message,userId,className,methodName,methodArgs)
+        insert into t_log(id,model_name,action,description,ip,create_time,success,message,user_id,class_name,method_name,method_args)
          values(#{id},#{modelName},#{action},#{description},#{ip},#{createTime},#{success},#{message},#{userId},#{className},#{methodName},#{methodArgs})
     </insert>
 </mapper>
