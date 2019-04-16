@@ -31,8 +31,9 @@ public class UserController {
     @Autowired
     private SignInService signInService;
 
-    @ApiOperation(value="", notes="根据url的name和password来获取用户详细信息")
-    @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "String", paramType = "path")
+    @Log(modelName = "用户管理模块",description = "用户相关信息维护",action = "用户信息查找")
+    @ApiOperation(value="用户信息查找", notes="根据url的name和password来获取用户详细信息")
+    @ApiImplicitParam(name = "name", value = "用户name", required = true, dataType = "String", paramType = "path")
     @RequestMapping(value = "user/{name}/{password}", method = RequestMethod.GET)
     public ResponseEntity<JsonResult> getUserByNameAndPassword (@PathVariable(value = "name") String name ,@PathVariable(value = "password") String password){
         JsonResult r = new JsonResult();
