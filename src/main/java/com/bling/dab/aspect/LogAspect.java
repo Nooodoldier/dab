@@ -82,7 +82,7 @@ public class LogAspect {
         try {
             proceed = proceedingJoinPoint.proceed();
             log.setSuccess("true");
-            log.setMessage("执行成功");
+            log.setMessage("执行通过");
         } catch (Throwable throwable) {
             log.setSuccess("false");
             log.setMessage("执行异常"+throwable.getMessage());
