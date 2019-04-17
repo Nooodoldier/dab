@@ -2,8 +2,17 @@ package com.bling.dab.service;
 
 import com.bling.dab.dao.LogMapper;
 import com.bling.dab.domain.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.FailureCallback;
+import org.springframework.util.concurrent.SuccessCallback;
+
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: hxp
@@ -13,10 +22,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogService {
 
+    private final static Logger logger = LoggerFactory.getLogger(LogService.class);
     @Autowired
     private LogMapper logMapper;
+
 
     public int saveLog(Log log){
         return logMapper.saveLog(log);
     }
+
+    @Async(value = "taskExecutor")
+    public Future<String> saveLogs(Log log){
+        logger.info("线程"+Thread.currentThread().getId());
+        AsyncResult result = null;
+        try {
+            saveLog(log);
+            TimeUnit.SECONDS.sleep(100);
+            result = new AsyncResult<>("执行成功");
+        } catch (Exception e) {
+            result = new AsyncResult<>("执行异常"+e.getMessage());
+        }
+        return result;
+    }
+
 }

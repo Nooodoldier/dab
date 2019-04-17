@@ -3,14 +3,14 @@
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <!-- 设置日志输出的格式 -->
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %t - %m%n"/>
         </Console>
         <RollingFile name="RollingFileInfo" fileName="D:/info.log"
                      filePattern="D:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="INFO"/>
             </Filters>
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %t - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>

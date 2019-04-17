@@ -8,6 +8,7 @@ import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.UserMongo;
 import com.bling.dab.service.UserService;
+import com.bling.dab.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.Future;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={DabApplication.class})
@@ -32,6 +34,9 @@ public class DabApplicationTests {
     private RedisConfig redisConfig;
     @Resource
     private UserMongo userMongo;
+
+    @Resource
+    private Task task;
     @Test
     public void booMapper() {
         User user = new User();
@@ -120,6 +125,30 @@ public class DabApplicationTests {
     public void deleteUserById(){
         boolean b = userMongo.deleteUserById(2);
         logger.info("mongodb查询所有："+ JSON.toJSONString(b));
+    }
+
+    @Test
+    public void test() throws Exception {
+
+        long start = System.currentTimeMillis();
+
+        task.doTaskOne();
+        task.doTaskTwo();
+        task.doTaskThree();
+        Future<String> task4 = task.doTaskFour();
+        while(true) {
+            if(task4.isDone()) {
+                System.out.println("task4执行"+task4.isDone());
+                // 4个任务都调用完成，退出循环等待
+                break;
+            }
+            Thread.sleep(1000);
+        }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
+
     }
 }
 

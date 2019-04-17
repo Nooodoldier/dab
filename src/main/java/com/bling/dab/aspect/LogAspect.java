@@ -12,6 +12,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestAttributes;
@@ -21,6 +25,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.concurrent.Future;
 
 /**
  * @author: hxp
@@ -37,6 +42,9 @@ public class LogAspect {
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Pointcut("@annotation(com.bling.dab.common.annotation.Log)")
     public void log(){
@@ -91,9 +99,51 @@ public class LogAspect {
         sw.stop();
         millis = sw.getLastTaskTimeMillis();
         logger.info("调用"+methodName+"结果返回值为"+JSON.toJSONString(proceed)+",耗时"+millis);
-        logService.saveLog(log);
+        System.out.print(Thread.currentThread().getId());
+        logger.info("线程"+Thread.currentThread().getId());
+        //saveLog(log);
+        saveLogs(log);
         return proceed;
     }
+
+
+//    public void saveLog(Log log){
+//        try {
+//            int i = logService.saveLog(log);
+//            logger.info("保存日志记录结果"+(i>0));
+//        } catch (Exception e) {
+//            logger.error("保存日志记录异常",e);
+//        }
+//    }
+
+    public void saveLogs(Log log){
+        try {
+            sw.start();
+            Future<String> future = logService.saveLogs(log);
+            sw.stop();
+            logger.info("保存日志记录结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+        } catch (Exception e) {
+            logger.error("保存日志记录异常",e);
+        }
+    }
+
+
+//    public void saveLog(Log log){
+//        try {
+//            threadPoolTaskExecutor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    logger.info("线程"+Thread.currentThread().getId());
+//                    int i = logService.saveLog(log);
+//                    logger.info("保存日志记录结果"+(i>0));
+//                }
+//            });
+//
+//        } catch (Exception e) {
+//            logger.error("保存日志记录异常",e);
+//        }
+//    }
+
 
     private  String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
