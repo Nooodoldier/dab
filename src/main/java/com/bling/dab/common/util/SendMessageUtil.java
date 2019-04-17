@@ -127,7 +127,7 @@ public class SendMessageUtil {
         /**
          * "SMS账户","接口秘钥","目标号码","发送内容"
          */
-        Integer resultCode = SendMessageUtil.send("hxp123456","1111111","15810665479","验证码:"+getRandomCode(6));
+        Integer resultCode = SendMessageUtil.send("hxp123456","d41d8cd98f00b204e980","15810665479","验证码:"+getRandomCode(6));
         System.out.println(SendMessageUtil.getMessage(resultCode));
     }
 }

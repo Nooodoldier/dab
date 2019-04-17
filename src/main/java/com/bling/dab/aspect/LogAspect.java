@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: hxp
@@ -107,42 +108,38 @@ public class LogAspect {
     }
 
 
-//    public void saveLog(Log log){
-//        try {
-//            int i = logService.saveLog(log);
-//            logger.info("保存日志记录结果"+(i>0));
-//        } catch (Exception e) {
-//            logger.error("保存日志记录异常",e);
-//        }
-//    }
-
     public void saveLogs(Log log){
         try {
             sw.start();
             Future<String> future = logService.saveLogs(log);
+            logger.info("执行结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+            TimeUnit.SECONDS.sleep(10);
             sw.stop();
-            logger.info("保存日志记录结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+            while (future.isDone()){
+                logger.info("执行结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+                return;
+            }
         } catch (Exception e) {
             logger.error("保存日志记录异常",e);
         }
     }
 
 
-//    public void saveLog(Log log){
-//        try {
-//            threadPoolTaskExecutor.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    logger.info("线程"+Thread.currentThread().getId());
-//                    int i = logService.saveLog(log);
-//                    logger.info("保存日志记录结果"+(i>0));
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            logger.error("保存日志记录异常",e);
-//        }
-//    }
+    public void saveLog(Log log){
+        try {
+            threadPoolTaskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    logger.info("线程"+Thread.currentThread().getId());
+                    int i = logService.saveLog(log);
+                    logger.info("保存日志记录结果"+(i>0));
+                }
+            });
+
+        } catch (Exception e) {
+            logger.error("保存日志记录异常",e);
+        }
+    }
 
 
     private  String getIpAddress(HttpServletRequest request) {

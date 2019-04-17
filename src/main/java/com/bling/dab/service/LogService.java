@@ -36,8 +36,8 @@ public class LogService {
         logger.info("线程"+Thread.currentThread().getId());
         AsyncResult result = null;
         try {
-            saveLog(log);
-            TimeUnit.SECONDS.sleep(100);
+
+            logger.info("保存日志结果"+(saveLog(log)>0));
             result = new AsyncResult<>("执行成功");
         } catch (Exception e) {
             result = new AsyncResult<>("执行异常"+e.getMessage());
