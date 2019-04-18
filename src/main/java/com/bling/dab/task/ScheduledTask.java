@@ -29,12 +29,24 @@ public class ScheduledTask {
     @Resource
     private RedisConfig redisConfig;
 
+    /**
+     * 固定间隔任务
+     */
     @Scheduled(fixedRate = 1000 * 30)
-    public void reportCurrentTime(){
-        System.out.println ("Scheduling Tasks Examples: The time is now " + dateFormat ().format (new Date ()));
+    public void fixedRateCurrentTime(){
+        System.out.println ("Scheduling fixedRateTasks Examples: The time is now " + dateFormat ().format (new Date ()));
     }
 
-    //每1分钟执行一次
+    /**
+     * 固定频率任务
+     */
+    @Scheduled(fixedDelay = 1000 * 30)
+    public void fixedDelayCurrentTime(){
+        System.out.println ("Scheduling fixedDelayTasks Examples: The time is now " + dateFormat ().format (new Date ()));
+    }
+    /**
+     * 每1分钟执行一次
+     */
     @Scheduled(cron = "0 */1 *  * * * ")
     public void reportCurrentByCron(){
 
