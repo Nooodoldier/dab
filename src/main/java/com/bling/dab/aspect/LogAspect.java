@@ -113,10 +113,11 @@ public class LogAspect {
             sw.start();
             Future<String> future = logService.saveLogs(log);
             logger.info("执行结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+            //异步调用不需要睡眠等待,这里是为了查看执行效果
             TimeUnit.SECONDS.sleep(10);
             sw.stop();
             while (future.isDone()){
-                logger.info("执行结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis());
+                logger.info("执行结果"+future.isDone()+",耗时"+sw.getLastTaskTimeMillis()+","+future.get());
                 return;
             }
         } catch (Exception e) {
