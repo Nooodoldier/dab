@@ -1,5 +1,7 @@
 package com.bling.dab.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +11,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -19,6 +22,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 public class TreadPoolConfig implements AsyncConfigurer {
+
+    private final static Logger logger = LoggerFactory.getLogger(TreadPoolConfig.class);
 
     @Value("${spring.task.execution.pool.core-size}")
     private int corePoolSize;
@@ -59,6 +64,21 @@ public class TreadPoolConfig implements AsyncConfigurer {
      */
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
+        return new MyAsyncExceptionHandler();
+    }
+
+    /**
+     * 自定义异常处理类
+     */
+    class MyAsyncExceptionHandler implements AsyncUncaughtExceptionHandler{
+
+        //手动处理捕获的异常
+        @Override
+        public void handleUncaughtException(Throwable throwable, Method method, Object... objects) {
+            logger.info("捕获异常信息ExceptionMessage"+throwable.getMessage()+",methodName="+method.getName());
+            for (Object param: objects) {
+                logger.info("Parameter value -"+param);
+            }
+        }
     }
 }
