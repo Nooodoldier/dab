@@ -8,7 +8,7 @@ import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.UserMongo;
 import com.bling.dab.service.UserService;
-import com.bling.dab.task.Task;
+import com.bling.dab.task.AsyncTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class DabApplicationTests {
     private UserMongo userMongo;
 
     @Resource
-    private Task task;
+    private AsyncTask asyncTask;
     @Test
     public void booMapper() {
         User user = new User();
@@ -132,10 +132,10 @@ public class DabApplicationTests {
 
         long start = System.currentTimeMillis();
 
-        task.doTaskOne();
-        task.doTaskTwo();
-        task.doTaskThree();
-        Future<String> task4 = task.doTaskFour();
+        asyncTask.doTaskOne();
+        asyncTask.doTaskTwo();
+        asyncTask.doTaskThree();
+        Future<String> task4 = asyncTask.doTaskFour();
         while(true) {
             if(task4.isDone()) {
                 System.out.println("task4执行"+task4.isDone());

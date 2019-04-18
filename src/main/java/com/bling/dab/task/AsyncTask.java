@@ -2,7 +2,6 @@ package com.bling.dab.task;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -11,10 +10,10 @@ import java.util.concurrent.Future;
 /**
  * @author: hxp
  * @date: 2019/4/17 19:16
- * @description:
+ * @description:异步调用
  */
 @Component
-public class Task {
+public class AsyncTask {
 
     private static Random random = new Random();
 
