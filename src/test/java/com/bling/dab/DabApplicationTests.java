@@ -15,9 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Future;
 
 @RunWith(SpringRunner.class)
@@ -26,15 +29,15 @@ public class DabApplicationTests {
 
     private static final Logger logger = LoggerFactory.getLogger(DabApplicationTests.class);
 
+    private final static StopWatch sw = new StopWatch();
     @Resource
     private UserMapper userMapper;
     @Resource
     private UserService userService;
     @Resource
-    private RedisConfig redisConfig;
-    @Resource
     private UserMongo userMongo;
-
+    @Resource
+    private RedisConfig redisConfig;
     @Resource
     private AsyncTask asyncTask;
     @Test
@@ -149,6 +152,27 @@ public class DabApplicationTests {
 
         System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
 
+    }
+
+    @Test
+    public  void timerTaskTest()throws Exception{
+
+        TimerTask timerTask = new TimerTask(){
+            @Override
+            public void run(){
+                System.out.print("timer Task RUN"+System.currentTimeMillis()+"\n");
+            }
+        };
+
+
+        Timer timer = new Timer();
+        //安排指定的任务在指定的时间开始进行重复的固定延迟执行。这里是每3秒执行一次
+
+        sw.start();
+        timer.schedule(timerTask,3,2000);
+        Thread.sleep(5000);
+        sw.stop();
+        System.out.println("执行时间"+sw.getLastTaskTimeMillis());
     }
 }
 

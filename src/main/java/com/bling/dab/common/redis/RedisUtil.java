@@ -18,7 +18,6 @@ import java.util.Set;
  * @date: 2019/1/30 13:41
  * @description:
  */
-@Component
 public class RedisUtil{
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

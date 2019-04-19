@@ -47,7 +47,7 @@ public class ScheduledTask {
     /**
      * 每1分钟执行一次
      */
-    @Scheduled(cron = "0 */1 *  * * * ")
+    @Scheduled(cron = "*/10 * *  * * * ")
     public void reportCurrentByCron(){
 
         RedisUtil redisUtil = RedisUtil.getInstance(redisConfig);
