@@ -1,5 +1,6 @@
 package com.bling.dab.controller;
 
+import com.bling.dab.common.annotation.Auth;
 import com.bling.dab.domain.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @description:
  */
 @ApiIgnore
+@Auth
 @RestController
 public class LoginController {
 
