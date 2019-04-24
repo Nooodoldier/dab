@@ -1,4 +1,4 @@
-package com.bling.dab.aspect;
+package com.bling.dab.common.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.bling.dab.domain.Log;

@@ -1,4 +1,4 @@
-package com.bling.dab.filter;
+package com.bling.dab.common.filter;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;

@@ -1,4 +1,4 @@
-package com.bling.dab.filter;
+package com.bling.dab.common.filter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;

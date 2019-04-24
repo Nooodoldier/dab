@@ -8,7 +8,7 @@ import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.UserMongo;
 import com.bling.dab.service.UserService;
-import com.bling.dab.task.AsyncTask;
+import com.bling.dab.common.task.AsyncTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

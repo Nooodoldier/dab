@@ -1,4 +1,4 @@
-package com.bling.dab.config;
+package com.bling.dab.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
