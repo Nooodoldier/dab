@@ -1,9 +1,8 @@
-package com.bling.dab.common.redis;
+package com.bling.dab.common.util;
 
+import com.bling.dab.common.config.RedisConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

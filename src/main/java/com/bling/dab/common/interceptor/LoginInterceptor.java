@@ -2,8 +2,8 @@ package com.bling.dab.common.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bling.dab.common.annotation.Auth;
-import com.bling.dab.common.redis.RedisConfig;
-import com.bling.dab.common.redis.RedisUtil;
+import com.bling.dab.common.config.RedisConfig;
+import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.domain.SessionData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

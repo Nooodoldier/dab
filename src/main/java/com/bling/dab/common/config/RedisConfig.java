@@ -1,4 +1,4 @@
-package com.bling.dab.common.redis;
+package com.bling.dab.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

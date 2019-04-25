@@ -1,7 +1,7 @@
 package com.bling.dab.common.task;
 
-import com.bling.dab.common.redis.RedisConfig;
-import com.bling.dab.common.redis.RedisUtil;
+import com.bling.dab.common.config.RedisConfig;
+import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.common.util.HostUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

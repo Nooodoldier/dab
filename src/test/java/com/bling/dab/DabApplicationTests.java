@@ -2,8 +2,8 @@ package com.bling.dab;
 
 
 import com.alibaba.fastjson.JSON;
-import com.bling.dab.common.redis.RedisConfig;
-import com.bling.dab.common.redis.RedisUtil;
+import com.bling.dab.common.config.RedisConfig;
+import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.UserMongo;
