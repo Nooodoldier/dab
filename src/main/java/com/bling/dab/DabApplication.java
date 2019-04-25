@@ -1,6 +1,7 @@
 package com.bling.dab;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +18,7 @@ public class DabApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DabApplication.class, args);
+        System.out.println("dab启动完成--------");
     }
 
 }
