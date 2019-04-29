@@ -18,7 +18,7 @@ public class DabApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DabApplication.class, args);
-        System.out.println("dab启动完成--------");
+        System.out.println("dab启动完成--------OK！");
     }
 
 }
