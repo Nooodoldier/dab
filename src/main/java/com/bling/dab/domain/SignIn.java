@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class SignIn {
 
+    private String id;
+
     private String userName;
 
     private String password;

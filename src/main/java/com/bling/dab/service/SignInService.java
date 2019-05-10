@@ -20,4 +20,20 @@ public class SignInService {
         return signInMapper.querySignIn(in);
     }
 
+    public SignIn querySignInById(String userId) {
+
+        SignIn in = new SignIn();
+        in.setId(userId);
+        in.setUserName("San");
+        in.setPassword("123456");
+        return in;
+    }
+
+    public SignIn querySignInByName(SignIn user) {
+        SignIn in = new SignIn();
+        in.setId("1");
+        in.setUserName(user.getUserName());
+        in.setPassword("123456");
+        return in;
+    }
 }
