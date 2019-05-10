@@ -1,5 +1,6 @@
 package com.bling.dab.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bling.dab.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @description:
  */
 //@Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     int saveUser(User user);
 }
