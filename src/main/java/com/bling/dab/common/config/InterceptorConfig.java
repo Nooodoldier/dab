@@ -2,10 +2,15 @@ package com.bling.dab.common.config;
 
 
 import com.bling.dab.common.interceptor.AuthenticationInterceptor;
+import com.bling.dab.common.interceptor.LoginInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
  * @author: hxp
@@ -15,16 +20,41 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
+    private static final Logger logger =  LoggerFactory.getLogger(InterceptorConfig.class);
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor())
                 .addPathPatterns("/**");
-        // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录
+        registry.addInterceptor(loginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**","/images/**","/js/**","/login.html");
+        // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录或者通过excludePathPatterns配置不需要拦截的路径
+        //多拦截器配置
     }
 
+    /**
+     * <p>
+     *     视图处理器也可以在配置文件配置
+     * </p>
+     *
+     * @return
+     */
+    @Bean
+    public ViewResolver viewResolver() {
+        logger.info("ViewResolver");
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/jsp/");
+        viewResolver.setSuffix(".jsp");
+        return viewResolver;
+    }
     @Bean
     public AuthenticationInterceptor authenticationInterceptor() {
+
         return new AuthenticationInterceptor();
+    }
+    @Bean
+    public LoginInterceptor loginInterceptor() {
+        return new LoginInterceptor();
     }
 }
