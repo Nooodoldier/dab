@@ -21,7 +21,7 @@ public class HostUtil {
     private static final Logger logger = LoggerFactory.getLogger(HostUtil.class);
 
     /**
-     * 获取全局流水号
+     * 获取流水号
      *
      * @return
      * @throws Exception
@@ -36,25 +36,11 @@ public class HostUtil {
             String simpleDateFormatString = simpleDateFormat.format(date);
             Random random = new Random();
             int n = random.nextInt(90) + 10;
-            flowId = dateFormatString.substring(2) + HostUtil.getDCN() + "dab" + simpleDateFormatString + n;
+            flowId = dateFormatString.substring(2) + HostUtil.getHostName().substring(0, 2) + "dab" + simpleDateFormatString + n;
         }catch(Exception e){
             logger.error("generate transId error ", e);
         }
         return flowId;
-    }
-
-    /**
-     * 数据中心DCN编号
-     *
-     * @return
-     * @throws Exception
-     */
-    public static String getDCN() throws Exception {
-        String hostName = HostUtil.getHostName();
-        if (null == hostName) {
-            throw new NullPointerException("HostUtil getDCN method throw NullPointerException.");
-        }
-        return hostName.substring(0, 2);
     }
 
     /**
