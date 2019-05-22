@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date: 2019/4/4 10:03
  * @description:
  */
-public interface SignInMapper extends JpaRepository<SignIn,Integer> {
+public interface SignInMapper {
 
     SignIn querySignIn(SignIn in);
 }

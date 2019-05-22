@@ -1,6 +1,6 @@
 package com.bling.dab.domain;
 
-public class loginUser {
+public class LoginUser {
     private Integer id;
 
     private String username;

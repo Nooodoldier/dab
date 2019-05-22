@@ -3,14 +3,14 @@ package com.bling.dab.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class loginUserExample {
+public class LoginUserExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public loginUserExample() {
+    public LoginUserExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
