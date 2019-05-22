@@ -14,7 +14,7 @@ import java.util.UUID;
  * @description:
  */
 @WebService(serviceName = "GirlService",
-            targetNamespace = "http://service.dab.bling.com",
+            targetNamespace = "http://service.dab.bling.com/",
             endpointInterface = "com.bling.dab.service.GirlService")
 @Component
 public class GirlServiceImpl implements GirlService{
@@ -27,29 +27,29 @@ public class GirlServiceImpl implements GirlService{
         girl.setGid(UUID.randomUUID().toString().replace("-", ""));
         girl.setGname("test1");
         girl.setGemail("maplefix@163.xom");
-        girlMap.put(girl.getGid(), girl);
+        girlMap.put(girl.getGname(), girl);
 
         girl = new Girl();
         girl.setGid(UUID.randomUUID().toString().replace("-", ""));
         girl.setGname("test2");
         girl.setGemail("maplefix@163.xom");
-        girlMap.put(girl.getGid(), girl);
+        girlMap.put(girl.getGname(), girl);
 
         girl = new Girl();
         girl.setGid(UUID.randomUUID().toString().replace("-", ""));
         girl.setGname("test3");
         girl.setGemail("maplefix@163.xom");
-        girlMap.put(girl.getGid(), girl);
+        girlMap.put(girl.getGname(), girl);
     }
     @Override
-    public Girl getGirl(String gid) {
+    public String getGirl(String gname) {
         System.out.println("userMap是:"+girlMap);
-        return girlMap.get(gid);
+        return girlMap.get(gname).toString();
     }
 
     @Override
-    public String getGname(String gid) {
+    public String getGname(String gname) {
         System.out.println("userMap是:"+girlMap);
-        return girlMap.get(gid).getGname();
+        return girlMap.get(gname).toString();
     }
 }

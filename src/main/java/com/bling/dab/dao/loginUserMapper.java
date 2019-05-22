@@ -1,31 +1,31 @@
 package com.bling.dab.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bling.dab.domain.loginUser;
-import com.bling.dab.domain.loginUserExample;
+import com.bling.dab.domain.LoginUser;
+import com.bling.dab.domain.LoginUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface loginUserMapper extends BaseMapper {
-    int countByExample(loginUserExample example);
+public interface LoginUserMapper extends BaseMapper<LoginUser> {
+    int countByExample(LoginUserExample example);
 
-    int deleteByExample(loginUserExample example);
+    int deleteByExample(LoginUserExample example);
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(loginUser record);
+    int insert(LoginUser record);
 
-    int insertSelective(loginUser record);
+    int insertSelective(LoginUser record);
 
-    List<loginUser> selectByExample(loginUserExample example);
+    List<LoginUser> selectByExample(LoginUserExample example);
 
-    loginUser selectByPrimaryKey(Integer id);
+    LoginUser selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") loginUser record, @Param("example") loginUserExample example);
+    int updateByExampleSelective(@Param("record") LoginUser record, @Param("example") LoginUserExample example);
 
-    int updateByExample(@Param("record") loginUser record, @Param("example") loginUserExample example);
+    int updateByExample(@Param("record") LoginUser record, @Param("example") LoginUserExample example);
 
-    int updateByPrimaryKeySelective(loginUser record);
+    int updateByPrimaryKeySelective(LoginUser record);
 
-    int updateByPrimaryKey(loginUser record);
+    int updateByPrimaryKey(LoginUser record);
 }

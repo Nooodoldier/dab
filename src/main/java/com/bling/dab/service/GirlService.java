@@ -12,13 +12,14 @@ import javax.jws.WebService;
  * @date: 2019/5/17 15:08
  * @description:
  */
-@WebService
+@WebService(name = "GirlService",//暴露服务名称
+                targetNamespace = "http://service.dab.bling.com/")// 命名空间,一般是接口的包名倒序
 public interface GirlService {
 
     @WebMethod
-    Girl getGirl(@WebParam(name = "gid") String gid);
+    String getGirl(@WebParam(name = "gname") String gname);
 
     @WebMethod
     @WebResult(name = "String",targetNamespace = "")
-    String getGname(@WebParam(name = "gid") String gid);
+    String getGname(@WebParam(name = "gname") String gname);
 }

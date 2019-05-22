@@ -31,10 +31,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**","/images/**","/js/**","/login.html","/soap/*");
+                .excludePathPatterns("/css/**","/images/**","/js/**","/login.html","/services/*");
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**","/images/**","/js/**","/login.html","/soap/*");
+                .excludePathPatterns("/css/**","/images/**","/js/**","/login.html","/services/*");
         // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录或者通过excludePathPatterns配置不需要拦截的路径
         //多拦截器配置
     }
