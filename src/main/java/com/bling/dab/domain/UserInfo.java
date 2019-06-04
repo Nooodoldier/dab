@@ -1,7 +1,5 @@
 package com.bling.dab.domain;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +9,8 @@ import java.util.List;
  * @date: 2019/5/10 18:10
  * @description:用户信息
  */
-@Data
 @Entity
+@Table(name = "user_info")
 public class UserInfo implements Serializable {
     @Id
     @GeneratedValue
@@ -28,4 +26,60 @@ public class UserInfo implements Serializable {
     private List<SysRole> roleList;// 一个用户具有多个角色
 
     // 省略 get set 方法
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public byte getState() {
+        return state;
+    }
+
+    public void setState(byte state) {
+        this.state = state;
+    }
+
+    public List<SysRole> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<SysRole> roleList) {
+        this.roleList = roleList;
+    }
 }

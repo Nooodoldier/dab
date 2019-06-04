@@ -3,16 +3,21 @@ package com.bling.dab;
 
 import com.alibaba.fastjson.JSON;
 import com.bling.dab.common.config.RedisConfig;
+import com.bling.dab.common.model.UserInfoReq;
+import com.bling.dab.common.result.Result;
 import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.dao.UserMapper;
 import com.bling.dab.domain.User;
+import com.bling.dab.service.UserInfoService;
 import com.bling.dab.service.UserMongo;
 import com.bling.dab.service.UserService;
 import com.bling.dab.common.task.AsyncTask;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
@@ -174,5 +179,19 @@ public class DabApplicationTests {
         sw.stop();
         System.out.println("执行时间"+sw.getLastTaskTimeMillis());
     }
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Test
+    public void saveUserInfoTest(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setName("玛丽丽");
+        userInfoReq.setPassword("123456");
+        Result result = userInfoService.saveUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+
+
 }
 

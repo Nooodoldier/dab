@@ -1,7 +1,5 @@
 package com.bling.dab.domain;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,8 +8,9 @@ import java.util.List;
  * @date: 2019/5/10 18:11
  * @description:角色信息
  */
-@Data
+
 @Entity
+@Table(name = "sys_role")
 public class SysRole {
     @Id
     @GeneratedValue
@@ -31,4 +30,52 @@ public class SysRole {
     private List<UserInfo> userInfos;// 一个角色对应多个用户
 
     // 省略 get set 方法
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public List<SysPermission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<SysPermission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<UserInfo> getUserInfos() {
+        return userInfos;
+    }
+
+    public void setUserInfos(List<UserInfo> userInfos) {
+        this.userInfos = userInfos;
+    }
 }

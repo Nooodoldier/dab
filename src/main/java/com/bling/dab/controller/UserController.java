@@ -1,7 +1,7 @@
 package com.bling.dab.controller;
 
 import com.bling.dab.common.annotation.Log;
-import com.bling.dab.common.result.JsonResult;
+import com.bling.dab.common.result.Result;
 import com.bling.dab.domain.SignIn;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.SignInService;
@@ -35,18 +35,19 @@ public class UserController {
     @ApiOperation(value="用户信息查找", notes="根据url的name和password来获取用户详细信息")
     @ApiImplicitParam(name = "name", value = "用户name", required = true, dataType = "String", paramType = "path")
     @RequestMapping(value = "user/{name}/{password}", method = RequestMethod.GET)
-    public ResponseEntity<JsonResult> getUserByNameAndPassword (@PathVariable(value = "name") String name ,@PathVariable(value = "password") String password){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> getUserByNameAndPassword (@PathVariable(value = "name") String name , @PathVariable(value = "password") String password){
+        Result r = new Result();
         try {
             SignIn in = new SignIn();
             in.setUserName(name);
             in.setPassword(password);
             SignIn user = signInService.querySignIn(in);
-            r.setResult(user);
-            r.setStatus("ok");
+            r.setData(user);
+            r.setSuccess(true);
+            r.setMessage("ok");
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
@@ -60,15 +61,15 @@ public class UserController {
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer", paramType = "path")
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<JsonResult> getUserById (@PathVariable(value = "id") Integer id){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> getUserById (@PathVariable(value = "id") Integer id){
+        Result r = new Result();
         try {
             User user = users.get(id);
-            r.setResult(user);
-            r.setStatus("ok");
+            r.setSuccess(true);
+            r.setMessage("ok");
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
@@ -80,15 +81,15 @@ public class UserController {
      */
     @ApiOperation(value="获取用户列表", notes="获取用户列表")
     @RequestMapping(value = "users", method = RequestMethod.GET)
-    public ResponseEntity<JsonResult> getUserList (){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> getUserList (){
+        Result r = new Result();
         try {
             List<User> userList = new ArrayList<User>(users.values());
-            r.setResult(userList);
-            r.setStatus("ok");
+            r.setSuccess(true);
+            r.setMessage("ok");
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
@@ -102,16 +103,15 @@ public class UserController {
     @ApiOperation(value="创建用户", notes="根据User对象创建用户")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "user", method = RequestMethod.POST)
-    public ResponseEntity<JsonResult> add (@RequestBody User user){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> add (@RequestBody User user){
+        Result r = new Result();
         try {
             users.put(user.getId(), user);
-            r.setResult(user.getId());
-            r.setStatus("ok");
+            r.setSuccess(true);
+            r.setMessage("ok");
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
-
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
@@ -125,15 +125,15 @@ public class UserController {
     @ApiOperation(value="删除用户", notes="根据url的id来指定删除用户")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<JsonResult> delete (@PathVariable(value = "id") Integer id){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> delete (@PathVariable(value = "id") Integer id){
+        Result r = new Result();
         try {
             users.remove(id);
-            r.setResult(id);
-            r.setStatus("ok");
+            r.setSuccess(true);
+            r.setMessage("ok");
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
 
             e.printStackTrace();
         }
@@ -151,19 +151,19 @@ public class UserController {
             @ApiImplicitParam(name = "user", value = "用户实体user", required = true, dataType = "User")
     })
     @RequestMapping(value = "user/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<JsonResult> update (@PathVariable("id") Integer id, @RequestBody User user){
-        JsonResult r = new JsonResult();
+    public ResponseEntity<Result> update (@PathVariable("id") Integer id, @RequestBody User user){
+        Result r = new Result();
         try {
             User u = users.get(id);
             u.setName(user.getName());
             u.setAge(user.getAge());
             users.put(id, u);
-            r.setResult(u);
-            r.setStatus("ok");
+            r.setData(u);
+            r.setMessage("ok");
+            r.setSuccess(true);
         } catch (Exception e) {
-            r.setResult(e.getClass().getName() + ":" + e.getMessage());
-            r.setStatus("error");
-
+            r.setMessage(e.getClass().getName() + ":" + e.getMessage());
+            r.setSuccess(false);
             e.printStackTrace();
         }
         return ResponseEntity.ok(r);
