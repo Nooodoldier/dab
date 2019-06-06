@@ -25,9 +25,4 @@ public class UserService {
     public int saveUser(User user){
         return userMapper.saveUser(user);
     }
-
-    public Result insertUser(User user){
-        int insert = userMapper.insert(user);
-        return Result.success(insert);
-    }
 }
