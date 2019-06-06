@@ -1,6 +1,5 @@
 package com.bling.dab.service;
 
-import com.bling.dab.common.result.Result;
 import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.domain.User;
 import org.springframework.stereotype.Service;
