@@ -3,6 +3,7 @@ package com.bling.dab.domain;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -16,6 +17,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "t_user")
 public class User {
 
     private int id;

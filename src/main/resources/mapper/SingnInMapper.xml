@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bling.dab.dao.SignInMapper">
+<mapper namespace="com.bling.dab.mapper.SignInMapper">
 
     <select id="querySignIn" resultType="com.bling.dab.domain.SignIn">
         SELECT `user_name` userName,`password` password  FROM t_login where user_name =#{userName} and password =#{password}

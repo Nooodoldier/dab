@@ -1,4 +1,4 @@
-package com.bling.dab.dao;
+package com.bling.dab.mapper;
 
 import com.bling.dab.domain.BatchData;
 import com.bling.dab.domain.Car;

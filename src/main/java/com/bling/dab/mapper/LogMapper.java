@@ -1,4 +1,4 @@
-package com.bling.dab.dao;
+package com.bling.dab.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bling.dab.domain.Log;

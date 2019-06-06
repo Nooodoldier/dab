@@ -1,7 +1,7 @@
 package com.bling.dab.service;
 
 import com.bling.dab.common.result.Result;
-import com.bling.dab.dao.LoginUserMapper;
+import com.bling.dab.mapper.LoginUserMapper;
 import com.bling.dab.domain.LoginUser;
 import com.bling.dab.domain.LoginUserExample;
 import com.github.pagehelper.PageHelper;
@@ -19,18 +19,41 @@ import java.util.List;
 @Service
 public class LoginService {
 
+
     @Autowired
     private LoginUserMapper loginUserMapper;
 
     /**
-     * 分页查询在线用户
+     * 保存登陆用户
+     * @param record
      * @return
      */
-    public Result getPageLoginUser(){
-        PageHelper.startPage(0,10);
-        LoginUserExample loginUserExample= new LoginUserExample();
-        List<LoginUser> loginUsers = loginUserMapper.selectByExample(loginUserExample);
-        PageInfo<LoginUser> loginUserPageInfo = new PageInfo<>(loginUsers);
-        return Result.success(loginUserPageInfo);
+    public Result saveLoginUser(LoginUser record){
+        int insert = loginUserMapper.insert(record);
+        return Result.success(insert);
+    }
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    public Result selectByPrimaryKey(Integer id){
+        LoginUser user = loginUserMapper.selectByPrimaryKey(id);
+        return Result.success(user);
+    }
+
+    /**
+     * 分页查询
+     * @param pageNum
+     * @return
+     */
+    public Result selectByExample(int pageNum ,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        LoginUserExample example = new LoginUserExample();
+        example.createCriteria().andIdBetween(0, 10);
+        List<LoginUser> users = loginUserMapper.selectByExample(example);
+        PageInfo<LoginUser> page = new PageInfo<>(users);
+        return Result.success(page);
     }
 }

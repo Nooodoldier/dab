@@ -6,16 +6,12 @@ import com.bling.dab.common.config.RedisConfig;
 import com.bling.dab.common.model.SysRoleReq;
 import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
+import com.bling.dab.common.task.AsyncTask;
 import com.bling.dab.common.util.RedisUtil;
-import com.bling.dab.dao.UserMapper;
-import com.bling.dab.domain.SysRole;
+import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.domain.UserInfo;
-import com.bling.dab.service.SysRoleService;
-import com.bling.dab.service.UserInfoService;
-import com.bling.dab.service.UserMongo;
-import com.bling.dab.service.UserService;
-import com.bling.dab.common.task.AsyncTask;
+import com.bling.dab.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
@@ -59,10 +55,11 @@ public class DabApplicationTests {
     @Test
     public void booService() {
         User user = new User();
-        user.setName("好嗨哟");
+        user.setName("ww好嗨哟");
         int i = userService.saveUser(user);
         logger.info("=======save========"+(i>0));
     }
+
     @Test
     public void redisService(){
         RedisUtil redisUtil = RedisUtil.getInstance(redisConfig);
@@ -242,7 +239,7 @@ public class DabApplicationTests {
     }
     @Test
     public void findByUid(){
-        Result result = userInfoService.findByUid(4);
+        Result result = userInfoService.findByUid(17);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result.getData()));
     }
@@ -315,6 +312,5 @@ public class DabApplicationTests {
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
-
 }
 

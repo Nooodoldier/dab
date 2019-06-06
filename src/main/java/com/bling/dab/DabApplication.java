@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableJpaRepositories("com.bling.dab.dao")
-@MapperScan("com.bling.dab.dao")
+@MapperScan("com.bling.dab.mapper")
 public class DabApplication {
 
     public static void main(String[] args) {

@@ -1,12 +1,11 @@
-package com.bling.dab.dao;
+package com.bling.dab.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bling.dab.domain.LoginUser;
 import com.bling.dab.domain.LoginUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface LoginUserMapper extends BaseMapper<LoginUser> {
+public interface LoginUserMapper {
     int countByExample(LoginUserExample example);
 
     int deleteByExample(LoginUserExample example);

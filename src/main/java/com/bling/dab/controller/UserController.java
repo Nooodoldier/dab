@@ -23,6 +23,7 @@ import java.util.*;
  */
 @RestController
 @Api(value = "类描述", tags = {"显示的标签"})
+@RequestMapping("/user")
 public class UserController {
 
     /**创建线程安全的Map*/

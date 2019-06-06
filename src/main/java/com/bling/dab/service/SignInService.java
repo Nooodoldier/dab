@@ -1,6 +1,6 @@
 package com.bling.dab.service;
 
-import com.bling.dab.dao.SignInMapper;
+import com.bling.dab.mapper.SignInMapper;
 import com.bling.dab.domain.SignIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

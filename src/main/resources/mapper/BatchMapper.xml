@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bling.dab.dao.BatchMapper">
+<mapper namespace="com.bling.dab.mapper.BatchMapper">
 
     <select id="selectBatchData" resultType="com.bling.dab.domain.BatchData">
         select id,name,age,cid,car_name carName,car_price carPrice from t_user u,t_car c where u.id = c.uid
