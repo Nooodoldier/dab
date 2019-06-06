@@ -3,16 +3,19 @@ package com.bling.dab.service;
 import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.common.util.EncryptUtil;
+import com.bling.dab.dao.SysRoleRepository;
 import com.bling.dab.dao.UserInfoRepository;
+import com.bling.dab.domain.SysRole;
 import com.bling.dab.domain.UserInfo;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author: hxp
@@ -25,7 +28,6 @@ public class UserInfoService {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
-
     public UserInfo findByUsername(String username) {
 
         return userInfoRepository.findByUsername(username);
@@ -33,18 +35,45 @@ public class UserInfoService {
 
 
     public Result findByUid(Integer uid) {
-        UserInfo info = userInfoRepository.getOne(uid);
+        UserInfo info = userInfoRepository.findByUid(uid);
         return Result.success(info);
     }
 
+    public Result getByUid(Integer uid) {
+        UserInfo info = userInfoRepository.getByUid(uid);
+        return Result.success(info);
+    }
+    public Result getOne(Integer uid) {
+        UserInfo info = userInfoRepository.getOne(uid);
+        return Result.success(info);
+    }
+    public Result findById(Integer uid) {
+        //UserInfo info = userInfoRepository.findById(uid).get();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setName("丽丽");
+        //创建匹配器，即如何使用查询条件
+        ExampleMatcher exampleMatcher = ExampleMatcher
+                .matching()
+//                .withMatcher("name",ExampleMatcher.GenericPropertyMatchers.endsWith())
+//                .withMatcher("name",ExampleMatcher.GenericPropertyMatchers.startsWith())
+                .withMatcher("name",ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("salt");
+        Example<UserInfo> example = Example.of(userInfo,exampleMatcher);
+        UserInfo info = userInfoRepository.findOne(example).get();
+        return Result.success(info);
+    }
 
+    public Result findAllById(List<Integer> list){
+        List<UserInfo> all = userInfoRepository.findAllById(list);
+        return Result.success(all);
+    }
     /**
      * 分页查询
      * @param userInfoReq
      * @return
      */
     public Result findAll(UserInfoReq userInfoReq) {
-        int page = NumberUtils.toInt(userInfoReq.getCurrentPage(), 1);
+        int page = NumberUtils.toInt(userInfoReq.getCurrentPage(), 0);
         int size = NumberUtils.toInt(userInfoReq.getPageSize(), 10);
         String order = userInfoReq.getOrder();
         UserInfo userInfo = new UserInfo();
@@ -59,6 +88,7 @@ public class UserInfoService {
      * @param userInfoReq
      * @return
      */
+    @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
     public Result saveUser(UserInfoReq userInfoReq){
         UserInfo userInfo = new UserInfo();
         userInfo.setName(userInfoReq.getName());
@@ -68,9 +98,16 @@ public class UserInfoService {
         userInfo.setPassword(encryptUtil.MD5(encryptUtil.Base64Encode(userInfoReq.getPassword())+salt));
         userInfo.setSalt(salt);
         userInfo.setState(Byte.valueOf("0"));
-        UserInfo save = userInfoRepository.save(userInfo);
-        return Result.success(save);
+        Set<Integer> sets = userInfoReq.getSets();
+        UserInfo info = userInfoRepository.save(userInfo);
+        Iterator<Integer> iterator = sets.iterator();
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            userInfoRepository.saveUserRole(info.getUid(),next);
+        }
+        return Result.success(info);
     }
+
 
     /**
      * 批量删除\n
@@ -89,4 +126,16 @@ public class UserInfoService {
         return Result.success();
     }
 
+    /**
+     * 修改user
+     * @param userInfoReq
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
+    public Result updateUser(UserInfoReq userInfoReq){
+        Integer uid = userInfoReq.getUid();
+        String name = userInfoReq.getName();
+        int i = userInfoRepository.updateUser(name, uid);
+        return Result.success(i);
+    }
 }

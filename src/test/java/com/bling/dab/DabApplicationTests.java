@@ -3,15 +3,21 @@ package com.bling.dab;
 
 import com.alibaba.fastjson.JSON;
 import com.bling.dab.common.config.RedisConfig;
+import com.bling.dab.common.model.SysRoleReq;
 import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.dao.UserMapper;
+import com.bling.dab.domain.SysRole;
 import com.bling.dab.domain.User;
+import com.bling.dab.domain.UserInfo;
+import com.bling.dab.service.SysRoleService;
 import com.bling.dab.service.UserInfoService;
 import com.bling.dab.service.UserMongo;
 import com.bling.dab.service.UserService;
 import com.bling.dab.common.task.AsyncTask;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +29,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.Future;
 
 @RunWith(SpringRunner.class)
@@ -185,13 +189,132 @@ public class DabApplicationTests {
     @Test
     public void saveUserInfoTest(){
         UserInfoReq userInfoReq = new UserInfoReq();
-        userInfoReq.setName("玛丽丽");
+        userInfoReq.setName("玛丽");
         userInfoReq.setPassword("123456");
         Result result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
 
+    @Test
+    public void saveUserTestAndRoleTest(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setName("玛丽8");
+        userInfoReq.setPassword("123456");
+        Set<Integer> set = new HashSet<>();
+        set.add(6);
+        set.add(7);
+        userInfoReq.setSets(set);
+        Result result = userInfoService.saveUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+
+    @Test
+    public void deleteUserInfo(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        HashSet<Integer> sets = Sets.newHashSet();
+        sets.add(4);
+        sets.add(9);
+        sets.add(10);
+        userInfoReq.setSets(sets);
+        Result result = userInfoService.deleteUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+
+    }
+
+    @Test
+    public void updateUserTest(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setUid(17);
+        userInfoReq.setName("马云");
+        Result result = userInfoService.updateUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+
+    @Test
+    public void findByUsername(){
+        UserInfo info = userInfoService.findByUsername("48VymxD89y53v65MSn42IvSr0HY=");
+        Assert.assertNotNull(info);
+        logger.info(JSON.toJSONString(info));
+    }
+    @Test
+    public void findByUid(){
+        Result result = userInfoService.findByUid(4);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result.getData()));
+    }
+    @Test
+    public void getByUid(){
+        Result result = userInfoService.getByUid(4);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result.getData()));
+    }
+    @Test
+    public void getOne(){
+        //Result result = userInfoService.getOne(4);
+        Result result = userInfoService.findById(4);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result.getData()));
+        //存在懒加载的问题所以不用
+
+    }
+
+    @Test
+    public void findAllById(){
+        List<Integer> list = Arrays.asList(4);
+        Result result = userInfoService.findAllById(list);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result.getData()));
+    }
+
+    @Test
+    public void findPageAll(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setCurrentPage("0");
+        userInfoReq.setPageSize("10");
+        userInfoReq.setOrder("uid");
+        Result result = userInfoService.findAll(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+
+    }
+
+    @Autowired
+    private SysRoleService sysRoleService;
+    @Test
+    public void saveRole(){
+        SysRoleReq sysRoleReq = new SysRoleReq();
+        sysRoleReq.setId(null);
+        sysRoleReq.setAvailable(Boolean.TRUE);
+        sysRoleReq.setDescription("admin");
+        sysRoleReq.setRole("admin");
+        Result result = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveAllRole(){
+        SysRoleReq sysRoleReq = new SysRoleReq();
+        sysRoleReq.setId(null);
+        sysRoleReq.setAvailable(Boolean.TRUE);
+        sysRoleReq.setDescription("client");
+        sysRoleReq.setRole("client");
+
+        SysRoleReq sysRoleReq1 = new SysRoleReq();
+        sysRoleReq1.setId(null);
+        sysRoleReq1.setAvailable(Boolean.TRUE);
+        sysRoleReq1.setDescription("client1");
+        sysRoleReq1.setRole("client1");
+        ArrayList<SysRoleReq> list = Lists.newArrayList();
+        list.add(sysRoleReq);
+        list.add(sysRoleReq1);
+        Result result = sysRoleService.saveBatchRole(list);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
 
 }
 
