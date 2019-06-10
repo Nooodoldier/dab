@@ -24,6 +24,5 @@ public class SysRoleReq {
     private String currentPage;
     private String pageSize;
     private String order;
-    //角色 -- 权限关系：多对多关系;
     private Set<Integer> sets;
 }

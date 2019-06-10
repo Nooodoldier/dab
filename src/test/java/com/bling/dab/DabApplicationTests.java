@@ -525,7 +525,34 @@ public class DabApplicationTests {
         logger.info(JSON.toJSONString(result));
     }
 
-
+    @Test
+    public void saveSysPermissionTest13(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("用户关联角色修改");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/18");
+        sysPermission.setPermission("userInfo:updateUserRole");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/userInfo/updateUserRole");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest23(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("角色关联权限修改");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/19");
+        sysPermission.setPermission("sysRole:updateRolePermission");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/sysRole/updateRolePermission");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
 
     @Autowired
     private LoginService loginService;

@@ -1,6 +1,7 @@
 package com.bling.dab.service;
 
 import com.bling.dab.common.model.SysRoleReq;
+import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.dao.SysRoleRepository;
 import com.bling.dab.domain.SysRole;
@@ -84,6 +85,19 @@ public class SysRoleService {
             roles.add(role);
         });
         sysRoleRepository.deleteInBatch(roles);
+        return Result.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
+    public Result updateRolePermission(SysRoleReq sysRoleReq){
+        Integer rid = sysRoleReq.getId();
+        Set<Integer> sets = sysRoleReq.getSets();
+        sysRoleRepository.deleteRolePermission(rid);
+        Iterator<Integer> iterator = sets.iterator();
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            sysRoleRepository.saveRolePermission(next,rid);
+        }
         return Result.success();
     }
 }

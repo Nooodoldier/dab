@@ -111,6 +111,18 @@ public class UserInfoService {
         return Result.success(info);
     }
 
+    @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
+    public Result updateUserRole(UserInfoReq userInfoReq){
+        Integer uid = userInfoReq.getUid();
+        Set<Integer> sets = userInfoReq.getSets();
+        userInfoRepository.deleteUserRole(uid);
+        Iterator<Integer> iterator = sets.iterator();
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            userInfoRepository.saveUserRole(uid,next);
+        }
+        return Result.success();
+    }
 
     /**
      * 批量删除\n

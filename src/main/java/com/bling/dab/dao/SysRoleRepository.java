@@ -18,4 +18,7 @@ public interface SysRoleRepository extends JpaRepository<SysRole,Integer> {
     @Modifying
     @Query(value = "insert into sys_role_permission(permission_id,role_id) values(?1,?2)",nativeQuery = true)
     int saveRolePermission(Integer pid, Integer rid);
+    @Modifying
+    @Query(value = "delete from sys_role_permission where role_id =?1)",nativeQuery = true)
+    int deleteRolePermission(Integer rid);
 }

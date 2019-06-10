@@ -45,4 +45,8 @@ public interface UserInfoRepository extends JpaRepository<UserInfo,Integer> {
     @Modifying
     @Query(value = "update user_info set name = ?1 where uid = ?2",nativeQuery = true)
     int updateUser(String name, Integer uid);
+
+    @Modifying
+    @Query(value = "delete from sys_user_role  where uid = ?1",nativeQuery = true)
+    int deleteUserRole(Integer uid);
 }

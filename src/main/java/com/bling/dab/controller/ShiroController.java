@@ -90,4 +90,20 @@ public class ShiroController {
         Result result = sysPermissionService.deletePermission(sysPermissionReq);
         return result;
     }
+
+
+    @PostMapping("/userInfo/updateUserRole")
+    @RequiresPermissions("userInfo:updateUserRole")
+    public Result permissionDel(UserInfoReq userInfoReq){
+        Result result = userInfoService.updateUserRole(userInfoReq);
+        return result;
+    }
+
+    @PostMapping("/sysRole/updateRolePermission")
+    @RequiresPermissions("sysRole:updateRolePermission")
+    public Result permissionDel(SysRoleReq sysRoleReq){
+        Result result = sysRoleService.updateRolePermission(sysRoleReq);
+        return result;
+    }
+
 }
