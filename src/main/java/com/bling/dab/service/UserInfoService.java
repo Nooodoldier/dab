@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -100,10 +101,12 @@ public class UserInfoService {
         userInfo.setState(Byte.valueOf("0"));
         Set<Integer> sets = userInfoReq.getSets();
         UserInfo info = userInfoRepository.save(userInfo);
-        Iterator<Integer> iterator = sets.iterator();
-        while (iterator.hasNext()){
-            Integer next = iterator.next();
-            userInfoRepository.saveUserRole(info.getUid(),next);
+        if(!CollectionUtils.isEmpty(sets)){
+            Iterator<Integer> iterator = sets.iterator();
+            while (iterator.hasNext()){
+                Integer next = iterator.next();
+                userInfoRepository.saveUserRole(info.getUid(),next);
+            }
         }
         return Result.success(info);
     }

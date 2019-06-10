@@ -2,10 +2,11 @@ package com.bling.dab.mapper;
 
 import com.bling.dab.domain.LoginUser;
 import com.bling.dab.domain.LoginUserExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface LoginUserMapper {
+import java.util.List;
+
+public interface LoginUserMapper  {
     int countByExample(LoginUserExample example);
 
     int deleteByExample(LoginUserExample example);

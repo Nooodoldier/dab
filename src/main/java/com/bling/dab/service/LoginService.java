@@ -17,7 +17,7 @@ import java.util.List;
  * @description:
  */
 @Service
-public class LoginService {
+public class LoginService{
 
 
     @Autowired

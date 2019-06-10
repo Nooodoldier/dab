@@ -1,7 +1,7 @@
 package com.bling.dab.service;
 
-import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.domain.User;
+import com.bling.dab.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,4 +24,5 @@ public class UserService {
     public int saveUser(User user){
         return userMapper.saveUser(user);
     }
+
 }

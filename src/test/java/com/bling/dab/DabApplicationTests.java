@@ -8,6 +8,8 @@ import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.common.task.AsyncTask;
 import com.bling.dab.common.util.RedisUtil;
+import com.bling.dab.domain.LoginUser;
+import com.bling.dab.domain.SysPermission;
 import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.domain.User;
 import com.bling.dab.domain.UserInfo;
@@ -22,11 +24,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={DabApplication.class})
@@ -194,26 +198,51 @@ public class DabApplicationTests {
     }
 
     @Test
-    public void saveUserTestAndRoleTest(){
+    public void saveUserAndRoleTest(){
         UserInfoReq userInfoReq = new UserInfoReq();
-        userInfoReq.setName("玛丽8");
+        userInfoReq.setName("马云");
         userInfoReq.setPassword("123456");
         Set<Integer> set = new HashSet<>();
-        set.add(6);
-        set.add(7);
+        set.add(31);
+        set.add(32);
+        set.add(33);
+        userInfoReq.setSets(set);
+        Result result = userInfoService.saveUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveUserAndRoleTest1(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setName("马化腾");
+        userInfoReq.setPassword("123456");
+        Set<Integer> set = new HashSet<>();
+        set.add(32);
+        set.add(33);
+        userInfoReq.setSets(set);
+        Result result = userInfoService.saveUser(userInfoReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveUserAndRoleTest2(){
+        UserInfoReq userInfoReq = new UserInfoReq();
+        userInfoReq.setName("王健林");
+        userInfoReq.setPassword("123456");
+        Set<Integer> set = new HashSet<>();
+        set.add(33);
         userInfoReq.setSets(set);
         Result result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
 
+
     @Test
     public void deleteUserInfo(){
         UserInfoReq userInfoReq = new UserInfoReq();
-        HashSet<Integer> sets = Sets.newHashSet();
-        sets.add(4);
-        sets.add(9);
-        sets.add(10);
+        String[] uid = new String[]{"11","12","13","14","15","16","17"};
+        Set<Integer> sets = Arrays.asList(uid).stream().map((t) -> Integer.parseInt(t)).collect(Collectors.toSet());
         userInfoReq.setSets(sets);
         Result result = userInfoService.deleteUser(userInfoReq);
         Assert.assertNotNull(result);
@@ -309,6 +338,218 @@ public class DabApplicationTests {
         list.add(sysRoleReq);
         list.add(sysRoleReq1);
         Result result = sysRoleService.saveBatchRole(list);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveRolePermissionTest(){
+        SysRoleReq sysRoleReq = new SysRoleReq();
+        sysRoleReq.setRole("admin");
+        sysRoleReq.setAvailable(Boolean.TRUE);
+        sysRoleReq.setDescription("管理员");
+        HashSet<Integer> sets = new HashSet<>();
+        sets.add(18);
+        sets.add(19);
+        sets.add(20);
+        sets.add(21);
+        sets.add(22);
+        sets.add(23);
+        sets.add(24);
+        sets.add(25);
+        sets.add(26);
+        sysRoleReq.setSets(sets);
+        Result result = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveRolePermissionTest1(){
+        SysRoleReq sysRoleReq = new SysRoleReq();
+        sysRoleReq.setRole("tiger");
+        sysRoleReq.setAvailable(Boolean.TRUE);
+        sysRoleReq.setDescription("老虎");
+        HashSet<Integer> sets = new HashSet<>();
+        sets.add(21);
+        sets.add(22);
+        sets.add(23);
+        sets.add(24);
+        sets.add(25);
+        sets.add(26);
+        sysRoleReq.setSets(sets);
+        Result result = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveRolePermissionTest2(){
+        SysRoleReq sysRoleReq = new SysRoleReq();
+        sysRoleReq.setRole("monkey");
+        sysRoleReq.setAvailable(Boolean.TRUE);
+        sysRoleReq.setDescription("猴子");
+        HashSet<Integer> sets = new HashSet<>();
+        sets.add(24);
+        sets.add(25);
+        sets.add(26);
+        sysRoleReq.setSets(sets);
+        Result result = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Autowired
+    private SysPermissionService sysPermissionService;
+    @Test
+    public void saveSysPermissionTest1(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("用户管理");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/");
+        sysPermission.setPermission("userInfo:view");
+        sysPermission.setResourceType("menu");
+        sysPermission.setUrl("/userInfo/userList");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest11(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("用户添加");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/18");
+        sysPermission.setPermission("userInfo:add");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/userInfo/userAdd");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest12(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("用户删除");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/18");
+        sysPermission.setPermission("userInfo:del");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/userInfo/userDel");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest2(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("角色管理");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/");
+        sysPermission.setPermission("sysRole:view");
+        sysPermission.setResourceType("menu");
+        sysPermission.setUrl("/sysRole/roleList");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest21(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("角色添加");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/19");
+        sysPermission.setPermission("sysRole:add");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/sysRole/roleAdd");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest22(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("角色删除");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/19");
+        sysPermission.setPermission("sysRole:del");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/sysRole/roleDel");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+
+    @Test
+    public void saveSysPermissionTest3(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("权限管理");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/");
+        sysPermission.setPermission("sysPermission:view");
+        sysPermission.setResourceType("menu");
+        sysPermission.setUrl("/sysPermission/permissionList");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest31(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("权限添加");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/20");
+        sysPermission.setPermission("sysPermission:add");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/sysPermission/permissionAdd");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void saveSysPermissionTest32(){
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setAvailable(Boolean.TRUE);
+        sysPermission.setName("权限删除");
+        sysPermission.setParentId(0L);
+        sysPermission.setParentIds("0/20");
+        sysPermission.setPermission("sysPermission:del");
+        sysPermission.setResourceType("button");
+        sysPermission.setUrl("/sysPermission/permissionDel");
+        Result result = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+
+
+
+    @Autowired
+    private LoginService loginService;
+
+    @Test
+    public void saveLoginUser(){
+        LoginUser record = new LoginUser();
+        for (int i = 0; i <20 ; i++) {
+            record.setUsername("张大大"+i);
+            record.setPassword("123456");
+            Result result = loginService.saveLoginUser(record);
+            Assert.assertNotNull(result);
+            logger.info(JSON.toJSONString(result));
+        }
+    }
+    @Test
+    public void selectByPrimaryKey(){
+        Result result = loginService.selectByPrimaryKey(1);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
+    }
+    @Test
+    public void selectByExample(){
+        Result result = loginService.selectByExample(1, 5);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }

@@ -8,7 +8,7 @@ import com.bling.dab.domain.User;
  * @description:
  */
 //@Mapper
-public interface UserMapper  {
+public interface UserMapper {
 
     int saveUser(User user);
 }

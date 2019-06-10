@@ -1,6 +1,5 @@
 package com.bling.dab.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bling.dab.domain.Log;
 
 /**
@@ -8,7 +7,8 @@ import com.bling.dab.domain.Log;
  * @date: 2019/4/15 20:13
  * @description:
  */
-public interface LogMapper extends BaseMapper<Log> {
+//public interface LogMapper extends BaseMapper<Log> {
+public interface LogMapper {
 
     int saveLog(Log log);
 }

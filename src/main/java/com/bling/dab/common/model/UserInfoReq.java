@@ -1,11 +1,9 @@
 package com.bling.dab.common.model;
 
-import com.bling.dab.domain.SysRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 /**

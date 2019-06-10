@@ -1,14 +1,19 @@
 package com.bling.dab.common.model;
 
-import com.bling.dab.domain.SysRole;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author: hxp
  * @date: 2019/6/4 16:01
  * @description:
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SysPermissionReq {
 
     private Integer id;//主键.
@@ -19,5 +24,9 @@ public class SysPermissionReq {
     private Long parentId; //父编号
     private String parentIds; //父编号列表
     private Boolean available = Boolean.FALSE;
-    private List<SysRole> roles;
+
+    private String currentPage;
+    private String pageSize;
+    private String order;
+    private Set<Integer> sets;
 }
