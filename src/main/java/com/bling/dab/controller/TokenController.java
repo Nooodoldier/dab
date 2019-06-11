@@ -3,9 +3,11 @@ package com.bling.dab.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
+import com.bling.dab.common.model.SignInReq;
+import com.bling.dab.common.util.EncryptUtil;
 import com.bling.dab.common.util.JwtTokenUtil;
-import com.bling.dab.domain.SignIn;
-import com.bling.dab.service.SignInService;
+import com.bling.dab.domain.UserInfo;
+import com.bling.dab.service.UserInfoService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,33 +22,52 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/token")
 public class TokenController {
 
-
     @Autowired
-    private SignInService signInService;
-
+    private UserInfoService userInfoService;
+    /**   令牌过期时间设置为1天=秒*分*时   */
+    private static final long expireTime = 60*60*24L;
 
     /**
-     * 登陆
-     * @param user
+     * 1.当用户登录成功后，签发了一个token，设置了过期时间，假设为2个小时;
+     *
+     * 2.当用户距离到期时间大于30分钟的时候，用户携带原token访问接口，此时不签发新token，原token依然有效;
+     *
+     * 3.当用户距离到期时间小于30分钟，但是并没有过期，用户携带原token访问接口，这个时候签发新token，原token失效;
+     *
+     * 4.当用户token已经过期，直接签发新token。
+     */
+    /**
+     * 登陆获取token
+     * @param username
+     * @param password
      * @return
      */
     @PostMapping("/login")
     @LoginToken
-    public Object login(@RequestBody SignIn user) {
+    public Object login(@RequestParam("username") String username, @RequestParam("password") String password) {
 
         JSONObject jsonObject = new JSONObject();
-        SignIn in = signInService.querySignInByName(user);
-        if (in == null) {
+        UserInfo userInfo = userInfoService.findByUsername(username);
+        if (userInfo == null) {
             jsonObject.put("message", "登录失败,用户不存在");
             return jsonObject;
         } else {
-            if (!in.getPassword().equals(user.getPassword())) {
+            EncryptUtil encryptUtil = EncryptUtil.getInstance();
+            String passcode = encryptUtil.MD5(encryptUtil.Base64Encode(password) + userInfo.getSalt());
+            //校验登陆密码加盐的一致性
+            if (!userInfo.getPassword().equals(passcode)) {
                 jsonObject.put("message", "登录失败,密码错误");
                 return jsonObject;
             } else {
-                String token = JwtTokenUtil.createJWT(6000000, in);
+                SignInReq sign = new SignInReq();
+                sign.setId(Integer.toString(userInfo.getUid()));
+                sign.setUserName(userInfo.getUsername());
+                //此处的密码是加盐加密过后的
+                sign.setPassword(userInfo.getPassword());
+                String token = JwtTokenUtil.createJWT(expireTime, sign);
                 jsonObject.put("token", token);
-                jsonObject.put("user", in);
+                jsonObject.put("expireTime",expireTime);
+                jsonObject.put("sign", sign);
                 return jsonObject;
             }
         }

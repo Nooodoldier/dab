@@ -34,6 +34,11 @@ public class UserInfoService {
         return userInfoRepository.findByUsername(username);
     }
 
+    public UserInfo findUserInfoByUid(Integer uid) {
+
+        return userInfoRepository.findByUid(uid);
+    }
+
 
     public Result findByUid(Integer uid) {
         UserInfo info = userInfoRepository.findByUid(uid);

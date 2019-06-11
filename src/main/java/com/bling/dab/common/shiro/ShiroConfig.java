@@ -23,10 +23,11 @@ public class ShiroConfig {
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置不会被拦截的链接 顺序判断
+        /**静态文件css及图片*/
         filterChainDefinitionMap.put("/static/**", "anon");
+        /**webservice服务*/
         filterChainDefinitionMap.put("/services/**", "anon");
         filterChainDefinitionMap.put("/token/**", "anon");
-        filterChainDefinitionMap.put("/shiro/**", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");

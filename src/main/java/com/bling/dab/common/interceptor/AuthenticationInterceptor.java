@@ -4,9 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
+import com.bling.dab.common.model.SignInReq;
 import com.bling.dab.common.util.JwtTokenUtil;
 import com.bling.dab.domain.SignIn;
+import com.bling.dab.domain.UserInfo;
 import com.bling.dab.service.SignInService;
+import com.bling.dab.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -28,7 +31,7 @@ import java.lang.reflect.Method;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private SignInService userService;
+    private UserInfoService userInfoService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -65,11 +68,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("访问异常！");
                 }
-                SignIn user = userService.querySignInById(userId);
-                if (user == null) {
+                UserInfo info = userInfoService.findUserInfoByUid(Integer.parseInt(userId));
+                if (info == null) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }
-                Boolean verify = JwtTokenUtil.isVerify(token, user);
+                SignInReq sign = new SignInReq();
+                sign.setId(Integer.toString(info.getUid()));
+                sign.setUserName(info.getUsername());
+                sign.setPassword(info.getPassword());
+                Boolean verify = JwtTokenUtil.isVerify(token, sign);
                 if (!verify) {
                     throw new RuntimeException("非法访问！");
                 }
