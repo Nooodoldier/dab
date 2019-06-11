@@ -7,17 +7,20 @@ import com.bling.dab.common.result.Result;
 import com.bling.dab.service.SysPermissionService;
 import com.bling.dab.service.SysRoleService;
 import com.bling.dab.service.UserInfoService;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * shiro管理
  */
-@ApiIgnore
+@Api(description = "shiro管理")
 @RestController
+@RequestMapping("/shiro")
 public class ShiroController {
 
     @Autowired

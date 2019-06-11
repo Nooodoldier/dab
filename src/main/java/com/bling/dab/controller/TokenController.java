@@ -6,18 +6,18 @@ import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.util.JwtTokenUtil;
 import com.bling.dab.domain.SignIn;
 import com.bling.dab.service.SignInService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * @author: hxp
  * @date: 2019/5/10 15:45
  * @description:
  */
+@Api(description = "token分配管理")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/token")
 public class TokenController {
 
 
@@ -32,7 +32,7 @@ public class TokenController {
      */
     @PostMapping("/login")
     @LoginToken
-    public Object login(@RequestBody @Valid SignIn user) {
+    public Object login(@RequestBody SignIn user) {
 
         JSONObject jsonObject = new JSONObject();
         SignIn in = signInService.querySignInByName(user);
@@ -55,6 +55,7 @@ public class TokenController {
     /**
      * 查看个人信息
      */
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
     @CheckToken
     @GetMapping("/getMessage")
     public String getMessage() {

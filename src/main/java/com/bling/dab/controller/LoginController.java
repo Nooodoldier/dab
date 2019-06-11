@@ -1,20 +1,19 @@
 package com.bling.dab.controller;
 
-import com.bling.dab.common.annotation.Auth;
-import com.bling.dab.common.result.Result;
 import com.bling.dab.domain.User;
 import com.bling.dab.service.LoginService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author: hxp
  * @date: 2019/2/18 10:56
  * @description:
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/login")
 public class LoginController {

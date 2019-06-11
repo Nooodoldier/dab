@@ -21,6 +21,7 @@ import java.util.*;
  * @date: 2019/2/15 19:40
  * @description:
  */
+@ApiIgnore
 @RestController
 @Api(value = "类描述", tags = {"显示的标签"})
 @RequestMapping("/user")
