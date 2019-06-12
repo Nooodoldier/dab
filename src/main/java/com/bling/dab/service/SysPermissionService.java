@@ -37,7 +37,7 @@ public class SysPermissionService {
         int size = NumberUtils.toInt(sysPermissionReq.getPageSize(), 10);
         String order = sysPermissionReq.getOrder();
         SysPermission sysPermission = new SysPermission();
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, order);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, order);
         Example<SysPermission> example = Example.of(sysPermission);
         Page<SysPermission> infoPage = sysPermissionRepository.findAll(example, pageable);
         return Result.success(infoPage);

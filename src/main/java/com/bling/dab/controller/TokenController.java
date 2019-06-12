@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.model.SignInReq;
+import com.bling.dab.common.util.DateUtil;
 import com.bling.dab.common.util.EncryptUtil;
 import com.bling.dab.common.util.JwtTokenUtil;
 import com.bling.dab.domain.UserInfo;
@@ -12,6 +13,8 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * @author: hxp
  * @date: 2019/5/10 15:45
@@ -19,13 +22,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(description = "token分配管理")
 @RestController
-@RequestMapping("/token")
+//@RequestMapping("/token")
 public class TokenController {
 
     @Autowired
     private UserInfoService userInfoService;
-    /**   令牌过期时间设置为1天=秒*分*时   */
-    private static final long expireTime = 60*60*24L;
+    /**   令牌过期时间设置为1天=毫秒*秒*分*时   */
+    private static final long expireTime = 1000*60*60*24L;
 
     /**
      * 1.当用户登录成功后，签发了一个token，设置了过期时间，假设为2个小时;
@@ -42,7 +45,7 @@ public class TokenController {
      * @param password
      * @return
      */
-    @PostMapping("/login")
+    @PostMapping("/token/login")
     @LoginToken
     public Object login(@RequestParam("username") String username, @RequestParam("password") String password) {
 
@@ -64,9 +67,11 @@ public class TokenController {
                 sign.setUserName(userInfo.getUsername());
                 //此处的密码是加盐加密过后的
                 sign.setPassword(userInfo.getPassword());
+                long now = System.currentTimeMillis();
+                String dateStr = DateUtil.parseDateToStr(new Date(now+expireTime), DateUtil.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MI_SS);
                 String token = JwtTokenUtil.createJWT(expireTime, sign);
                 jsonObject.put("token", token);
-                jsonObject.put("expireTime",expireTime);
+                jsonObject.put("expireTime",dateStr);
                 jsonObject.put("sign", sign);
                 return jsonObject;
             }

@@ -71,7 +71,7 @@ public class SysRoleService {
         int size = NumberUtils.toInt(sysRoleReq.getPageSize(), 10);
         String order = sysRoleReq.getOrder();
         SysRole sysRole = new SysRole();
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, order);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, order);
         Example<SysRole> example = Example.of(sysRole);
         Page<SysRole> infoPage = sysRoleRepository.findAll(example, pageable);
         return Result.success(infoPage);

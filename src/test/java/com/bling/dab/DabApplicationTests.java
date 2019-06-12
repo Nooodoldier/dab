@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
@@ -260,7 +261,7 @@ public class DabApplicationTests {
 
     @Test
     public void findByUsername(){
-        UserInfo info = userInfoService.findByUsername("48VymxD89y53v65MSn42IvSr0HY=");
+        UserInfo info = userInfoService.findByUsername("GwKtCC1tZahE7IgkR9CZGrkEqm4=");
         Assert.assertNotNull(info);
         logger.info(JSON.toJSONString(info));
     }
@@ -300,9 +301,9 @@ public class DabApplicationTests {
         userInfoReq.setCurrentPage("0");
         userInfoReq.setPageSize("10");
         userInfoReq.setOrder("uid");
-        Result result = userInfoService.findAll(userInfoReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        Page<UserInfo> infoPage = userInfoService.findAll(userInfoReq);
+        Assert.assertNotNull(infoPage.getContent());
+        logger.info(JSON.toJSONString(infoPage.getContent()));
 
     }
 

@@ -1,10 +1,12 @@
 package com.bling.dab.common.util;
 
+import com.alibaba.fastjson.JSON;
 import com.bling.dab.common.model.SignInReq;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.UUID;
  * @date: 2019/5/10 14:30
  * @description:
  */
+@Slf4j
 public class JwtTokenUtil {
 
     /**
@@ -27,6 +30,7 @@ public class JwtTokenUtil {
      * @return
      */
     public static String createJWT(long ttlMillis, SignInReq sign) {
+        log.info("开始创建token令牌,expt:"+ttlMillis);
         //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -61,14 +65,17 @@ public class JwtTokenUtil {
                 .setSubject(subject)
                 //设置签名使用的签名算法和签名使用的秘钥
                 .signWith(signatureAlgorithm, key);
+        Date exp = null;
         if (ttlMillis >= 0) {
             long expMillis = nowMillis + ttlMillis;
-            Date exp = new Date(expMillis);
+            exp = new Date(expMillis);
             //设置过期时间
             builder.setExpiration(exp);
         }
-
-        return builder.compact();
+        String token = builder.compact();
+        String dateStr = DateUtil.parseDateToStr(exp, DateUtil.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MI_SS);
+        log.info("结束创建token令牌:"+token+"\n"+"token令牌过期时间为:"+dateStr);
+        return token;
     }
 
 
@@ -89,6 +96,7 @@ public class JwtTokenUtil {
                 .setSigningKey(key)
                 //设置需要解析的jwt
                 .parseClaimsJws(token).getBody();
+        log.info("解密token令牌："+ JSON.toJSONString(claims));
         return claims;
     }
 
@@ -112,9 +120,10 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token).getBody();
 
         if (claims.get("password").equals(sign.getPassword())) {
+            log.info("验证token令牌通过！");
             return true;
         }
-
+        log.info("验证token令牌未通过！");
         return false;
     }
 

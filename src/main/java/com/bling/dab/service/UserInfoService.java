@@ -78,15 +78,15 @@ public class UserInfoService {
      * @param userInfoReq
      * @return
      */
-    public Result findAll(UserInfoReq userInfoReq) {
+    public Page<UserInfo> findAll(UserInfoReq userInfoReq) {
         int page = NumberUtils.toInt(userInfoReq.getCurrentPage(), 0);
         int size = NumberUtils.toInt(userInfoReq.getPageSize(), 10);
         String order = userInfoReq.getOrder();
         UserInfo userInfo = new UserInfo();
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, order);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, order);
         Example<UserInfo> example = Example.of(userInfo);
         Page<UserInfo> infoPage = userInfoRepository.findAll(example, pageable);
-        return Result.success(infoPage);
+        return infoPage;
     }
 
     /**
