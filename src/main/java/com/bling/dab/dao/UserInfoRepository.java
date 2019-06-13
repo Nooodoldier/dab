@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author: hxp
  * @date: 2019/6/3 15:46
@@ -49,4 +51,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfo,Integer> {
     @Modifying
     @Query(value = "delete from sys_user_role  where uid = ?1",nativeQuery = true)
     int deleteUserRole(Integer uid);
+
+    @Query(value = "select * from user_info",nativeQuery = true)
+    List<UserInfo> getUserList();
 }

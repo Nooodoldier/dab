@@ -1,11 +1,8 @@
 package com.bling.dab.service;
 
 import com.bling.dab.common.model.UserInfoReq;
-import com.bling.dab.common.result.Result;
 import com.bling.dab.common.util.EncryptUtil;
-import com.bling.dab.dao.SysRoleRepository;
 import com.bling.dab.dao.UserInfoRepository;
-import com.bling.dab.domain.SysRole;
 import com.bling.dab.domain.UserInfo;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,7 @@ public class UserInfoService {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+
     public UserInfo findByUsername(String username) {
 
         return userInfoRepository.findByUsername(username);
@@ -40,20 +38,20 @@ public class UserInfoService {
     }
 
 
-    public Result findByUid(Integer uid) {
+    public UserInfo findByUid(Integer uid) {
         UserInfo info = userInfoRepository.findByUid(uid);
-        return Result.success(info);
+        return info;
     }
 
-    public Result getByUid(Integer uid) {
+    public UserInfo getByUid(Integer uid) {
         UserInfo info = userInfoRepository.getByUid(uid);
-        return Result.success(info);
+        return info;
     }
-    public Result getOne(Integer uid) {
+    public UserInfo getOne(Integer uid) {
         UserInfo info = userInfoRepository.getOne(uid);
-        return Result.success(info);
+        return info;
     }
-    public Result findById(Integer uid) {
+    public UserInfo findById(Integer uid) {
         //UserInfo info = userInfoRepository.findById(uid).get();
         UserInfo userInfo = new UserInfo();
         userInfo.setName("丽丽");
@@ -66,15 +64,16 @@ public class UserInfoService {
                 .withIgnorePaths("salt");
         Example<UserInfo> example = Example.of(userInfo,exampleMatcher);
         UserInfo info = userInfoRepository.findOne(example).get();
-        return Result.success(info);
+        return info;
     }
 
-    public Result findAllById(List<Integer> list){
+    public List<UserInfo> findAllById(List<Integer> list){
         List<UserInfo> all = userInfoRepository.findAllById(list);
-        return Result.success(all);
+        return all;
     }
     /**
      * 分页查询
+     * JSA提供的这种方法在JSON转换时会有关联为代理对象的异常
      * @param userInfoReq
      * @return
      */
@@ -82,6 +81,9 @@ public class UserInfoService {
         int page = NumberUtils.toInt(userInfoReq.getCurrentPage(), 0);
         int size = NumberUtils.toInt(userInfoReq.getPageSize(), 10);
         String order = userInfoReq.getOrder();
+        if("".equals(order)|| null == order){
+            order = "uid";
+        }
         UserInfo userInfo = new UserInfo();
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, order);
         Example<UserInfo> example = Example.of(userInfo);
@@ -95,7 +97,7 @@ public class UserInfoService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
-    public Result saveUser(UserInfoReq userInfoReq){
+    public UserInfo saveUser(UserInfoReq userInfoReq){
         UserInfo userInfo = new UserInfo();
         userInfo.setName(userInfoReq.getName());
         EncryptUtil encryptUtil = EncryptUtil.getInstance();
@@ -113,11 +115,11 @@ public class UserInfoService {
                 userInfoRepository.saveUserRole(info.getUid(),next);
             }
         }
-        return Result.success(info);
+        return info;
     }
 
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
-    public Result updateUserRole(UserInfoReq userInfoReq){
+    public void updateUserRole(UserInfoReq userInfoReq){
         Integer uid = userInfoReq.getUid();
         Set<Integer> sets = userInfoReq.getSets();
         userInfoRepository.deleteUserRole(uid);
@@ -126,7 +128,6 @@ public class UserInfoService {
             Integer next = iterator.next();
             userInfoRepository.saveUserRole(uid,next);
         }
-        return Result.success();
     }
 
     /**
@@ -135,7 +136,7 @@ public class UserInfoService {
      * @param userInfoReq
      * @return
      */
-    public Result deleteUser(UserInfoReq userInfoReq){
+    public void deleteUser(UserInfoReq userInfoReq){
         Set<Integer> uids = userInfoReq.getSets();
         HashSet<UserInfo> infos = new HashSet<>();
         uids.forEach((t)->{
@@ -143,7 +144,6 @@ public class UserInfoService {
             infos.add(info);
         });
         userInfoRepository.deleteInBatch(infos);
-        return Result.success();
     }
 
     /**
@@ -152,10 +152,14 @@ public class UserInfoService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
-    public Result updateUser(UserInfoReq userInfoReq){
+    public int updateUser(UserInfoReq userInfoReq){
         Integer uid = userInfoReq.getUid();
         String name = userInfoReq.getName();
         int i = userInfoRepository.updateUser(name, uid);
-        return Result.success(i);
+        return i;
+    }
+
+    public List<UserInfo> getUserList() {
+        return userInfoRepository.getUserList();
     }
 }

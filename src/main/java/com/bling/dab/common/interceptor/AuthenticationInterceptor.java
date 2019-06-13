@@ -48,11 +48,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
-
-        CheckToken ct = handlerMethod.getMethodAnnotation(CheckToken.class);
-        if(ct!=null){
-            log.info("@LoginToken注解不为空！");
-        }
         //检查是否有LoginToken注释，有则跳过认证
         if (method.isAnnotationPresent(LoginToken.class)) {
             LoginToken loginToken = method.getAnnotation(LoginToken.class);

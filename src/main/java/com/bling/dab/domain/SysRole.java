@@ -8,7 +8,6 @@ import java.util.List;
  * @date: 2019/5/10 18:11
  * @description:角色信息
  */
-
 @Entity
 @Table(name = "sys_role")
 public class SysRole {

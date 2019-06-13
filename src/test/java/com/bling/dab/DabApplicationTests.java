@@ -8,10 +8,7 @@ import com.bling.dab.common.model.UserInfoReq;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.common.task.AsyncTask;
 import com.bling.dab.common.util.RedisUtil;
-import com.bling.dab.domain.LoginUser;
-import com.bling.dab.domain.SysPermission;
-import com.bling.dab.domain.User;
-import com.bling.dab.domain.UserInfo;
+import com.bling.dab.domain.*;
 import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.service.*;
 import com.google.common.collect.Lists;
@@ -191,7 +188,7 @@ public class DabApplicationTests {
         UserInfoReq userInfoReq = new UserInfoReq();
         userInfoReq.setName("玛丽");
         userInfoReq.setPassword("123456");
-        Result result = userInfoService.saveUser(userInfoReq);
+        UserInfo result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
@@ -206,7 +203,7 @@ public class DabApplicationTests {
         set.add(32);
         set.add(33);
         userInfoReq.setSets(set);
-        Result result = userInfoService.saveUser(userInfoReq);
+        UserInfo result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
@@ -219,7 +216,7 @@ public class DabApplicationTests {
         set.add(32);
         set.add(33);
         userInfoReq.setSets(set);
-        Result result = userInfoService.saveUser(userInfoReq);
+        UserInfo result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
@@ -231,7 +228,7 @@ public class DabApplicationTests {
         Set<Integer> set = new HashSet<>();
         set.add(33);
         userInfoReq.setSets(set);
-        Result result = userInfoService.saveUser(userInfoReq);
+        UserInfo result = userInfoService.saveUser(userInfoReq);
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
@@ -243,10 +240,7 @@ public class DabApplicationTests {
         String[] uid = new String[]{"11","12","13","14","15","16","17"};
         Set<Integer> sets = Arrays.asList(uid).stream().map((t) -> Integer.parseInt(t)).collect(Collectors.toSet());
         userInfoReq.setSets(sets);
-        Result result = userInfoService.deleteUser(userInfoReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
-
+        userInfoService.deleteUser(userInfoReq);
     }
 
     @Test
@@ -254,59 +248,68 @@ public class DabApplicationTests {
         UserInfoReq userInfoReq = new UserInfoReq();
         userInfoReq.setUid(17);
         userInfoReq.setName("马云");
-        Result result = userInfoService.updateUser(userInfoReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        int i = userInfoService.updateUser(userInfoReq);
+        Assert.assertNotNull(i);
+        logger.info(JSON.toJSONString(i>0));
     }
 
     @Test
     public void findByUsername(){
         UserInfo info = userInfoService.findByUsername("GwKtCC1tZahE7IgkR9CZGrkEqm4=");
         Assert.assertNotNull(info);
-        logger.info(JSON.toJSONString(info));
+       // logger.info(JSON.toJSONString(info));
     }
     @Test
     public void findByUid(){
-        Result result = userInfoService.findByUid(17);
+        UserInfo result = userInfoService.findByUid(34);
         Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result.getData()));
+        //logger.info(JSON.toJSONString(result.getData()));
     }
     @Test
     public void getByUid(){
-        Result result = userInfoService.getByUid(4);
+        UserInfo result = userInfoService.getByUid(4);
         Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result.getData()));
+        logger.info(JSON.toJSONString(result));
     }
     @Test
     public void getOne(){
         //Result result = userInfoService.getOne(4);
-        Result result = userInfoService.findById(4);
+        UserInfo result = userInfoService.findById(4);
         Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result.getData()));
+        logger.info(JSON.toJSONString(result));
         //存在懒加载的问题所以不用
 
     }
 
     @Test
     public void findAllById(){
-        List<Integer> list = Arrays.asList(4);
-        Result result = userInfoService.findAllById(list);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result.getData()));
+        List<Integer> list = Arrays.asList(34);
+        List<UserInfo> all = userInfoService.findAllById(list);
+        Assert.assertNotNull(all);
+       // logger.info(JSON.toJSONString(result.getData()));
     }
 
+    /**
+     * JSON.toStirng()方法会执行懒加载报错，此时关联对象为代理对象，无法序列化
+     */
     @Test
     public void findPageAll(){
         UserInfoReq userInfoReq = new UserInfoReq();
         userInfoReq.setCurrentPage("0");
         userInfoReq.setPageSize("10");
         userInfoReq.setOrder("uid");
-        Page<UserInfo> infoPage = userInfoService.findAll(userInfoReq);
-        Assert.assertNotNull(infoPage.getContent());
-        logger.info(JSON.toJSONString(infoPage.getContent()));
+        Page<UserInfo> all = userInfoService.findAll(userInfoReq);
+        Assert.assertNotNull(all);
+       // logger.info(JSON.toJSONString(all));
 
     }
+    @Test
+    public void getUserList(){
+        List<UserInfo> userList = userInfoService.getUserList();
+        Assert.assertNotNull(userList);
+        //logger.info(JSON.toJSONString(userList));
 
+    }
     @Autowired
     private SysRoleService sysRoleService;
     @Test
@@ -316,9 +319,9 @@ public class DabApplicationTests {
         sysRoleReq.setAvailable(Boolean.TRUE);
         sysRoleReq.setDescription("admin");
         sysRoleReq.setRole("admin");
-        Result result = sysRoleService.saveRole(sysRoleReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysRole role = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(role);
+        logger.info(JSON.toJSONString(role));
     }
     @Test
     public void saveAllRole(){
@@ -336,9 +339,9 @@ public class DabApplicationTests {
         ArrayList<SysRoleReq> list = Lists.newArrayList();
         list.add(sysRoleReq);
         list.add(sysRoleReq1);
-        Result result = sysRoleService.saveBatchRole(list);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        List<SysRole> sysRoles = sysRoleService.saveBatchRole(list);
+        Assert.assertNotNull(sysRoles);
+        logger.info(JSON.toJSONString(sysRoles));
     }
     @Test
     public void saveRolePermissionTest(){
@@ -357,9 +360,9 @@ public class DabApplicationTests {
         sets.add(25);
         sets.add(26);
         sysRoleReq.setSets(sets);
-        Result result = sysRoleService.saveRole(sysRoleReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysRole role = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(role);
+        logger.info(JSON.toJSONString(role));
     }
     @Test
     public void saveRolePermissionTest1(){
@@ -375,9 +378,9 @@ public class DabApplicationTests {
         sets.add(25);
         sets.add(26);
         sysRoleReq.setSets(sets);
-        Result result = sysRoleService.saveRole(sysRoleReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysRole role = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(role);
+        logger.info(JSON.toJSONString(role));
     }
     @Test
     public void saveRolePermissionTest2(){
@@ -390,9 +393,9 @@ public class DabApplicationTests {
         sets.add(25);
         sets.add(26);
         sysRoleReq.setSets(sets);
-        Result result = sysRoleService.saveRole(sysRoleReq);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysRole role = sysRoleService.saveRole(sysRoleReq);
+        Assert.assertNotNull(role);
+        logger.info(JSON.toJSONString(role));
     }
     @Autowired
     private SysPermissionService sysPermissionService;
@@ -406,9 +409,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("userInfo:view");
         sysPermission.setResourceType("menu");
         sysPermission.setUrl("/userInfo/userList");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest11(){
@@ -420,9 +423,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("userInfo:add");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/userInfo/userAdd");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest12(){
@@ -434,9 +437,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("userInfo:del");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/userInfo/userDel");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest2(){
@@ -448,9 +451,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysRole:view");
         sysPermission.setResourceType("menu");
         sysPermission.setUrl("/sysRole/roleList");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest21(){
@@ -462,9 +465,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysRole:add");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/sysRole/roleAdd");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest22(){
@@ -476,9 +479,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysRole:del");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/sysRole/roleDel");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
 
     @Test
@@ -491,9 +494,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysPermission:view");
         sysPermission.setResourceType("menu");
         sysPermission.setUrl("/sysPermission/permissionList");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest31(){
@@ -505,9 +508,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysPermission:add");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/sysPermission/permissionAdd");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest32(){
@@ -519,9 +522,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysPermission:del");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/sysPermission/permissionDel");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
 
     @Test
@@ -534,9 +537,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("userInfo:updateUserRole");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/userInfo/updateUserRole");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
     @Test
     public void saveSysPermissionTest23(){
@@ -548,9 +551,9 @@ public class DabApplicationTests {
         sysPermission.setPermission("sysRole:updateRolePermission");
         sysPermission.setResourceType("button");
         sysPermission.setUrl("/sysRole/updateRolePermission");
-        Result result = sysPermissionService.saveSysPermission(sysPermission);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        SysPermission permission = sysPermissionService.saveSysPermission(sysPermission);
+        Assert.assertNotNull(permission);
+        logger.info(JSON.toJSONString(permission));
     }
 
 

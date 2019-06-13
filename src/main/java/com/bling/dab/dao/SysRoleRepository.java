@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author: hxp
  * @date: 2019/6/3 15:50
@@ -21,4 +23,6 @@ public interface SysRoleRepository extends JpaRepository<SysRole,Integer> {
     @Modifying
     @Query(value = "delete from sys_role_permission where role_id =?1)",nativeQuery = true)
     int deleteRolePermission(Integer rid);
+    @Query(value = "select * from sys_role ",nativeQuery = true)
+    List<SysRole> getRoleList();
 }

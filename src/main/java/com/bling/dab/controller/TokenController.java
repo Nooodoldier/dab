@@ -10,6 +10,10 @@ import com.bling.dab.common.util.JwtTokenUtil;
 import com.bling.dab.domain.UserInfo;
 import com.bling.dab.service.UserInfoService;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +26,7 @@ import java.util.Date;
  */
 @Api(description = "token分配管理")
 @RestController
-//@RequestMapping("/token")
+@RequestMapping("/token")
 public class TokenController {
 
     @Autowired
@@ -45,7 +49,8 @@ public class TokenController {
      * @param password
      * @return
      */
-    @PostMapping("/token/login")
+    @ApiOperation("登陆获取token")
+    @PostMapping("/login")
     @LoginToken
     public Object login(@RequestParam("username") String username, @RequestParam("password") String password) {
 
@@ -62,6 +67,13 @@ public class TokenController {
                 jsonObject.put("message", "登录失败,密码错误");
                 return jsonObject;
             } else {
+                //shiro的token
+                //添加用户认证信息
+                Subject subject = SecurityUtils.getSubject();
+                UsernamePasswordToken shiroToken = new UsernamePasswordToken(userInfo.getUsername(),userInfo.getPassword());
+                //进行验证，这里可以捕获异常，然后返回对应信息
+                subject.login(shiroToken);
+
                 SignInReq sign = new SignInReq();
                 sign.setId(Integer.toString(userInfo.getUid()));
                 sign.setUserName(userInfo.getUsername());
@@ -80,7 +92,9 @@ public class TokenController {
 
     /**
      * 查看个人信息
+     * swagger传参需要此注解传token,postman不需要
      */
+    @ApiOperation("查看个人信息-验证token有效性")
     @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
     @CheckToken
     @GetMapping("/getMessage")

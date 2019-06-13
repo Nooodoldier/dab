@@ -8,7 +8,6 @@ import java.util.List;
  * @date: 2019/5/10 18:12
  * @description:
  */
-
 @Entity
 @Table(name = "sys_permission")
 public class SysPermission {

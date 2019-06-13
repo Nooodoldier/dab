@@ -1,11 +1,8 @@
 package com.bling.dab.service;
 
 import com.bling.dab.common.model.SysRoleReq;
-import com.bling.dab.common.model.UserInfoReq;
-import com.bling.dab.common.result.Result;
 import com.bling.dab.dao.SysRoleRepository;
 import com.bling.dab.domain.SysRole;
-import com.bling.dab.domain.UserInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,23 +32,23 @@ public class SysRoleService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
-    public Result saveRole(SysRoleReq sysRoleReq){
+    public SysRole saveRole(SysRoleReq sysRoleReq){
         SysRole sysRole = new SysRole();
         sysRole.setAvailable(sysRoleReq.getAvailable());
         sysRole.setDescription(sysRoleReq.getDescription());
         sysRole.setRole(sysRoleReq.getRole());
-        SysRole save = sysRoleRepository.save(sysRole);
+        SysRole role = sysRoleRepository.save(sysRole);
         Set<Integer> sets = sysRoleReq.getSets();
         if(!CollectionUtils.isEmpty(sets)){
             Iterator<Integer> iterator = sets.iterator();
             while (iterator.hasNext()){
                 Integer next = iterator.next();
-                sysRoleRepository.saveRolePermission(next, save.getId());
+                sysRoleRepository.saveRolePermission(next, role.getId());
             }
         }
-        return Result.success(save);
+        return role;
     }
-    public Result saveBatchRole(List<SysRoleReq> list){
+    public List<SysRole> saveBatchRole(List<SysRoleReq> list){
         ArrayList<SysRole> list1 = Lists.newArrayList();
         list.forEach((t)->{
             SysRole sysRole = new SysRole();
@@ -61,11 +58,11 @@ public class SysRoleService {
             list1.add(sysRole);
         });
         List<SysRole> roles = sysRoleRepository.saveAll(list1);
-        return Result.success(roles);
+        return roles;
     }
 
 
-    public Result findAll(SysRoleReq sysRoleReq) {
+    public Page<SysRole> findAll(SysRoleReq sysRoleReq) {
 
         int page = NumberUtils.toInt(sysRoleReq.getCurrentPage(), 0);
         int size = NumberUtils.toInt(sysRoleReq.getPageSize(), 10);
@@ -74,10 +71,10 @@ public class SysRoleService {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, order);
         Example<SysRole> example = Example.of(sysRole);
         Page<SysRole> infoPage = sysRoleRepository.findAll(example, pageable);
-        return Result.success(infoPage);
+        return infoPage;
     }
 
-    public Result deleteRole(SysRoleReq sysRoleReq) {
+    public void deleteRole(SysRoleReq sysRoleReq) {
         Set<Integer> rids = sysRoleReq.getSets();
         HashSet<SysRole> roles = new HashSet<>();
         rids.forEach((t)->{
@@ -85,11 +82,10 @@ public class SysRoleService {
             roles.add(role);
         });
         sysRoleRepository.deleteInBatch(roles);
-        return Result.success();
     }
 
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
-    public Result updateRolePermission(SysRoleReq sysRoleReq){
+    public void updateRolePermission(SysRoleReq sysRoleReq){
         Integer rid = sysRoleReq.getId();
         Set<Integer> sets = sysRoleReq.getSets();
         sysRoleRepository.deleteRolePermission(rid);
@@ -98,6 +94,9 @@ public class SysRoleService {
             Integer next = iterator.next();
             sysRoleRepository.saveRolePermission(next,rid);
         }
-        return Result.success();
+    }
+
+    public List<SysRole> getRoleList() {
+        return sysRoleRepository.getRoleList();
     }
 }

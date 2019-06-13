@@ -3,7 +3,10 @@ package com.bling.dab.dao;
 
 import com.bling.dab.domain.SysPermission;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author: hxp
@@ -13,4 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysPermissionRepository extends JpaRepository<SysPermission,Integer> {
 
+    @Query(name = "SELECT * FROM sys_permission",nativeQuery = true)
+    List<SysPermission> getPermissionList();
 }
