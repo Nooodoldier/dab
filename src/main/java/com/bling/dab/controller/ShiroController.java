@@ -1,5 +1,6 @@
 package com.bling.dab.controller;
 
+import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.model.*;
 import com.bling.dab.common.result.Result;
@@ -46,6 +47,7 @@ public class ShiroController {
 
     @Autowired
     private SysPermissionService sysPermissionService;
+
 
     @LoginToken
     @ApiOperation("查询用户列表")
