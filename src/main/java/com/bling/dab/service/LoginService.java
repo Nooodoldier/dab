@@ -44,6 +44,18 @@ public class LoginService{
     }
 
     /**
+     * 根据ID查询
+     * @param username
+     * @return
+     */
+    public LoginUser selectLoginUserByUsername(String username){
+        LoginUserExample example = new LoginUserExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<LoginUser> userList = loginUserMapper.selectByExample(example);
+        return userList.get(0);
+    }
+
+    /**
      * 分页查询
      * @param pageNum
      * @return

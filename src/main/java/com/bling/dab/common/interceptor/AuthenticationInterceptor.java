@@ -6,9 +6,7 @@ import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.model.SignInReq;
 import com.bling.dab.common.util.JwtTokenUtil;
-import com.bling.dab.domain.SignIn;
 import com.bling.dab.domain.UserInfo;
-import com.bling.dab.service.SignInService;
 import com.bling.dab.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 

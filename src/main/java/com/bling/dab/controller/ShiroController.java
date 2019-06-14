@@ -1,6 +1,5 @@
 package com.bling.dab.controller;
 
-import com.bling.dab.common.annotation.CheckToken;
 import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.model.*;
 import com.bling.dab.common.result.Result;

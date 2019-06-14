@@ -35,30 +35,13 @@ public class DabApplicationTests {
     private static final Logger logger = LoggerFactory.getLogger(DabApplicationTests.class);
 
     private final static StopWatch sw = new StopWatch();
-    @Resource
-    private UserMapper userMapper;
-    @Resource
-    private UserService userService;
+
     @Resource
     private UserMongo userMongo;
     @Resource
     private RedisConfig redisConfig;
     @Resource
     private AsyncTask asyncTask;
-    @Test
-    public void booMapper() {
-        User user = new User();
-        user.setName("好嗨哟");
-        int i = userMapper.saveUser(user);
-        logger.info("=======save========"+(i>0));
-    }
-    @Test
-    public void booService() {
-        User user = new User();
-        user.setName("ww好嗨哟");
-        int i = userService.saveUser(user);
-        logger.info("=======save========"+(i>0));
-    }
 
     @Test
     public void redisService(){

@@ -2,9 +2,10 @@ package com.bling.dab.controller;
 
 import com.bling.dab.common.annotation.Log;
 import com.bling.dab.common.result.Result;
+import com.bling.dab.domain.LoginUser;
 import com.bling.dab.domain.SignIn;
 import com.bling.dab.domain.User;
-import com.bling.dab.service.SignInService;
+import com.bling.dab.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,20 +32,20 @@ public class UserController {
     static Map<Integer, User> users = Collections.synchronizedMap(new HashMap<Integer, User>());
 
     @Autowired
-    private SignInService signInService;
+    private LoginService loginService;
 
     @Log(modelName = "用户管理模块",description = "用户相关信息维护",action = "用户信息查找")
     @ApiOperation(value="用户信息查找", notes="根据url的name和password来获取用户详细信息")
     @ApiImplicitParam(name = "name", value = "用户name", required = true, dataType = "String", paramType = "path")
     @RequestMapping(value = "user/{name}/{password}", method = RequestMethod.GET)
-    public ResponseEntity<Result> getUserByNameAndPassword (@PathVariable(value = "name") String name , @PathVariable(value = "password") String password){
+    public ResponseEntity<Result> getUserByNameAndPassword (@PathVariable(value = "username") String username , @PathVariable(value = "password") String password){
         Result r = new Result();
         try {
             SignIn in = new SignIn();
-            in.setUserName(name);
+            in.setUserName(username);
             in.setPassword(password);
-            SignIn user = signInService.querySignIn(in);
-            r.setData(user);
+            LoginUser loginUser = loginService.selectLoginUserByUsername(username);
+            r.setData(loginUser);
             r.setSuccess(true);
             r.setMessage("ok");
         } catch (Exception e) {
