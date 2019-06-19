@@ -17,7 +17,9 @@ public class DataSourceAspect {
 
     @Pointcut("!@annotation(com.bling.dab.common.annotation.Master) " +
             "&& (execution(* com.bling.dab.service..*.select*(..)) " +
-            "|| execution(* com.bling.dab.service..*.get*(..)))")
+            "|| execution(* com.bling.dab.service..*.get*(..)))"+
+            "|| execution(* com.bling.dab.service..*.find*(..)))"+
+            "|| execution(* com.bling.dab.service..*.query*(..)))")
     public void readPointcut() {
 
     }
@@ -25,6 +27,7 @@ public class DataSourceAspect {
     @Pointcut("@annotation(com.bling.dab.common.annotation.Master) " +
             "|| execution(* com.bling.dab.service..*.insert*(..)) " +
             "|| execution(* com.bling.dab.service..*.add*(..)) " +
+            "|| execution(* com.bling.dab.service..*.save*(..)) " +
             "|| execution(* com.bling.dab.service..*.update*(..)) " +
             "|| execution(* com.bling.dab.service..*.edit*(..)) " +
             "|| execution(* com.bling.dab.service..*.delete*(..)) " +

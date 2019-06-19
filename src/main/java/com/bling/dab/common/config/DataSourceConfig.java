@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
@@ -21,25 +22,26 @@ import java.util.Map;
 @Configuration
 public class DataSourceConfig {
 
-    @Bean
-    @ConfigurationProperties("spring.datasource.master")
+    @Bean(name = "masterDataSource")
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource.master")
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
-    @ConfigurationProperties("spring.datasource.slave1")
+    @Bean(name = "slave1DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.slave1")
     public DataSource slave1DataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
-    @ConfigurationProperties("spring.datasource.slave2")
+    @Bean(name = "slave2DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.slave2")
     public DataSource slave2DataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
+    @Bean(name = "myRoutingDataSource")
     public DataSource myRoutingDataSource(@Qualifier("masterDataSource") DataSource masterDataSource,
                                           @Qualifier("slave1DataSource") DataSource slave1DataSource,
                                           @Qualifier("slave2DataSource") DataSource slave2DataSource) {
@@ -53,13 +55,5 @@ public class DataSourceConfig {
         return myRoutingDataSource;
     }
 
-
-    public class MyRoutingDataSource extends AbstractRoutingDataSource {
-        @Nullable
-        @Override
-        protected Object determineCurrentLookupKey() {
-            return DBContextHolder.get();
-        }
-    }
 
 }
