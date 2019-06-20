@@ -547,13 +547,11 @@ public class DabApplicationTests {
     @Test
     public void saveLoginUser(){
         LoginUser record = new LoginUser();
-        for (int i = 0; i <20 ; i++) {
-            record.setUsername("张大大"+i);
-            record.setPassword("123456");
-            Result result = loginService.saveLoginUser(record);
-            Assert.assertNotNull(result);
-            logger.info(JSON.toJSONString(result));
-        }
+        record.setUsername("张大大");
+        record.setPassword("123456");
+        Result result = loginService.saveLoginUser(record);
+        Assert.assertNotNull(result);
+        logger.info(JSON.toJSONString(result));
     }
     @Test
     public void selectByPrimaryKey(){
@@ -567,5 +565,7 @@ public class DabApplicationTests {
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
+
+
 }
 
