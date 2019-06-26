@@ -27,6 +27,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/**", "anon");
         /**webservice服务*/
         filterChainDefinitionMap.put("/services/**", "anon");
+        filterChainDefinitionMap.put("/echarts/**", "anon");
         filterChainDefinitionMap.put("/token/**", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");

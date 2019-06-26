@@ -1,6 +1,5 @@
 package com.bling.dab.controller;
 
-import com.bling.dab.common.annotation.LoginToken;
 import com.bling.dab.common.model.*;
 import com.bling.dab.common.result.Result;
 import com.bling.dab.domain.SysPermission;
@@ -48,7 +47,6 @@ public class ShiroController {
     private SysPermissionService sysPermissionService;
 
 
-    @LoginToken
     @ApiOperation("查询用户列表")
     @RequiresPermissions("userInfo:view")
     @PostMapping("/userInfo/userList")
@@ -68,7 +66,6 @@ public class ShiroController {
         PageInfo pageInfo = new PageInfo<>(list);
         return Result.success(pageInfo);
     }
-    @LoginToken
     @ApiOperation("查询角色列表")
     @RequiresPermissions("sysRole:view")
     @PostMapping("/sysRole/roleList")
@@ -88,7 +85,6 @@ public class ShiroController {
         PageInfo pageInfo = new PageInfo<>(list);
         return Result.success(pageInfo);
     }
-    @LoginToken
     @ApiOperation("查询权限列表")
     @RequiresPermissions("sysPermission:view")
     @PostMapping("/sysPermission/permissionList")
@@ -108,7 +104,6 @@ public class ShiroController {
         PageInfo pageInfo = new PageInfo<>(list);
         return Result.success(pageInfo);
     }
-    @LoginToken
     @ApiOperation("用户添加")
     @RequiresPermissions("userInfo:add")
     @PostMapping("/userInfo/userAdd")
@@ -119,7 +114,6 @@ public class ShiroController {
         }
         return Result.success(userInfo);
     }
-    @LoginToken
     @ApiOperation("删除用户")
     @RequiresPermissions("userInfo:del")
     @PostMapping("/userInfo/userDel")
@@ -127,7 +121,6 @@ public class ShiroController {
         userInfoService.deleteUser(userInfoReq);
         return Result.success();
     }
-    @LoginToken
     @ApiOperation("添加角色")
     @RequiresPermissions("sysRole:add")
     @PostMapping("/sysRole/roleAdd")
@@ -135,7 +128,6 @@ public class ShiroController {
         SysRole role = sysRoleService.saveRole(sysRoleReq);
         return Result.success(role);
     }
-    @LoginToken
     @ApiOperation("删除角色")
     @RequiresPermissions("sysRole:del")
     @PostMapping("/sysRole/roleDel")
@@ -143,7 +135,6 @@ public class ShiroController {
         sysRoleService.deleteRole(sysRoleReq);
         return Result.success();
     }
-    @LoginToken
     @ApiOperation("添加权限")
     @RequiresPermissions("sysPermission:add")
     @PostMapping("/sysPermission/permissionAdd")
@@ -151,7 +142,6 @@ public class ShiroController {
         SysPermission sysPermission = sysPermissionService.savePermission(sysPermissionReq);
         return Result.success(sysPermission);
     }
-    @LoginToken
     @ApiOperation("删除权限")
     @RequiresPermissions("sysPermission:del")
     @PostMapping("/sysPermission/permissionDel")
@@ -159,7 +149,6 @@ public class ShiroController {
         sysPermissionService.deletePermission(sysPermissionReq);
         return Result.success();
     }
-    @LoginToken
     @ApiOperation("修改角色权限")
     @RequiresPermissions("sysRole:updateRolePermission")
     @PostMapping("/sysRole/updateRolePermission")
@@ -167,7 +156,6 @@ public class ShiroController {
         sysRoleService.updateRolePermission(sysRoleReq);
         return Result.success();
     }
-    @LoginToken
     @ApiOperation("修改用户角色")
     @RequiresPermissions("userInfo:updateUserRole")
     @PostMapping("/userInfo/updateUserRole")
