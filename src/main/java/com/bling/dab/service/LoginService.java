@@ -7,6 +7,8 @@ import com.bling.dab.domain.LoginUserExample;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,6 +33,7 @@ public class LoginService{
      * @param record
      * @return
      */
+    @CacheEvict(value="loginUser",allEntries=true)
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
     public Result saveLoginUser(LoginUser record){
         int insert = loginUserMapper.insert(record);
@@ -42,9 +45,9 @@ public class LoginService{
      * @param id
      * @return
      */
-    public Result selectByPrimaryKey(Integer id){
-        LoginUser user = loginUserMapper.selectByPrimaryKey(id);
-        return Result.success(user);
+    @Cacheable(value = "loginUser")
+    public LoginUser selectByPrimaryKey(Integer id){
+        return loginUserMapper.selectByPrimaryKey(id);
     }
 
     /**

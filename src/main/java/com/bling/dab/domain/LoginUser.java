@@ -1,6 +1,8 @@
 package com.bling.dab.domain;
 
-public class LoginUser {
+import java.io.Serializable;
+
+public class LoginUser implements Serializable {
     private Integer id;
 
     private String username;

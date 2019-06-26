@@ -9,7 +9,6 @@ import com.bling.dab.common.result.Result;
 import com.bling.dab.common.task.AsyncTask;
 import com.bling.dab.common.util.RedisUtil;
 import com.bling.dab.domain.*;
-import com.bling.dab.mapper.UserMapper;
 import com.bling.dab.service.*;
 import com.google.common.collect.Lists;
 import org.junit.Assert;
@@ -555,9 +554,10 @@ public class DabApplicationTests {
     }
     @Test
     public void selectByPrimaryKey(){
-        Result result = loginService.selectByPrimaryKey(1);
-        Assert.assertNotNull(result);
-        logger.info(JSON.toJSONString(result));
+        LoginUser loginUser = loginService.selectByPrimaryKey(1);
+        loginService.selectByPrimaryKey(1);
+        Assert.assertNotNull(loginUser);
+        logger.info(JSON.toJSONString(loginUser));
     }
     @Test
     public void selectByExample(){
