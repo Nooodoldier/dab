@@ -565,7 +565,15 @@ public class DabApplicationTests {
         Assert.assertNotNull(result);
         logger.info(JSON.toJSONString(result));
     }
-
+    @Test
+    public void updateLoginUser(){
+        LoginUser record = new LoginUser();
+        record.setId(1);
+        record.setUsername("大比哥");
+        record.setPassword("111111");
+        int i = loginService.updateLoginUser(record);
+        logger.info(JSON.toJSONString(i>0));
+    }
 
 }
 

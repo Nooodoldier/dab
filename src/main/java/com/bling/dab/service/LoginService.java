@@ -33,11 +33,21 @@ public class LoginService{
      * @param record
      * @return
      */
-    @CacheEvict(value="loginUser",allEntries=true)
     @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
     public Result saveLoginUser(LoginUser record){
         int insert = loginUserMapper.insert(record);
         return Result.success(insert);
+    }
+
+    /**
+     * 更新
+     * @param record
+     * @return
+     */
+    @CacheEvict(value="loginUser",allEntries=true)
+    @Transactional(rollbackFor = Exception.class ,propagation = Propagation.REQUIRED ,isolation = Isolation.READ_COMMITTED)
+    public int updateLoginUser(LoginUser record){
+        return loginUserMapper.updateByPrimaryKey(record);
     }
 
     /**
