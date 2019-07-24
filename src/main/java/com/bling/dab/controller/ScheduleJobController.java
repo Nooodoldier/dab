@@ -30,7 +30,7 @@ public class ScheduleJobController {
 
     @RequestMapping(value = "/quartz", method = RequestMethod.GET)
     public String quartz(){
-        return "/quartz.jsp";
+        return "/quartz";
     }
     /**
      * 查询所有的定时任务，用于页面加载时显示表格数据

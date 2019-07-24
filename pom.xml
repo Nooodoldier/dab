@@ -11,7 +11,7 @@
     <groupId>com.bling</groupId>
     <artifactId>dab</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <!--<packaging>war</packaging>-->
     <name>dab</name>
     <description>Demo project for Spring Boot</description>
 
@@ -55,12 +55,11 @@
             <version>8.0.36</version>
             <scope>provided</scope>
         </dependency>
-        <!-- tomcat 的支持.-->
+        <!-- 打war包时加入此项， 告诉spring-boot tomcat相关jar包用外部的，不要打进去 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
-            <!--方法二：内置tomcat在打war时需要将注释打开,jar不用注释；若在idea中run可以没有这个依赖,不过不能访问jsp,只能访问模版方式的页面-->
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
