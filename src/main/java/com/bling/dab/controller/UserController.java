@@ -2,14 +2,11 @@ package com.bling.dab.controller;
 
 import com.bling.dab.common.annotation.Log;
 import com.bling.dab.common.result.JsonResult;
-import com.bling.dab.domain.SignIn;
 import com.bling.dab.domain.User;
-import com.bling.dab.service.SignInService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -28,20 +25,24 @@ public class UserController {
     /**创建线程安全的Map*/
     static Map<Integer, User> users = Collections.synchronizedMap(new HashMap<Integer, User>());
 
-    @Autowired
-    private SignInService signInService;
 
+    /**
+     * 验证aop日志实现
+     * @param name
+     * @param age
+     * @return
+     */
     @Log(modelName = "用户管理模块",description = "用户相关信息维护",action = "用户信息查找")
-    @ApiOperation(value="用户信息查找", notes="根据url的name和password来获取用户详细信息")
+    @ApiOperation(value="用户信息查找", notes="根据url的name和age来获取用户详细信息")
     @ApiImplicitParam(name = "name", value = "用户name", required = true, dataType = "String", paramType = "path")
-    @RequestMapping(value = "user/{name}/{password}", method = RequestMethod.GET)
-    public ResponseEntity<JsonResult> getUserByNameAndPassword (@PathVariable(value = "name") String name ,@PathVariable(value = "password") String password){
+    @RequestMapping(value = "user/{name}/{age}", method = RequestMethod.GET)
+    public ResponseEntity<JsonResult> getUserByNameAndPassword (@PathVariable(value = "name") String name ,@PathVariable(value = "age") String age){
         JsonResult r = new JsonResult();
         try {
-            SignIn in = new SignIn();
-            in.setUserName(name);
-            in.setPassword(password);
-            SignIn user = signInService.querySignIn(in);
+            User user = new User();
+            user.setName(name);
+            user.setAge(11);
+            user.setId(111);
             r.setResult(user);
             r.setStatus("ok");
         } catch (Exception e) {
