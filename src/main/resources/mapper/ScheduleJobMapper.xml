@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bling.dab.dao.ScheduleJobMapper">
+  <resultMap id="BaseResultMap" type="com.bling.dab.domain.ScheduleJob">
+    <id column="id" property="id" />
+    <result column="job_name" property="jobName" />
+    <result column="job_group" property="jobGroup" />
+    <result column="method_name" property="methodName" />
+    <result column="bean_class" property="beanClass" />
+    <result column="status" property="status" />
+    <result column="cron_expression" property="cronExpression" />
+    <result column="params" property="params" />
+    <result column="remark" property="remark" />
+    <result column="create_time" property="createTime" />
+    <result column="modify_time" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, job_name, job_group, method_name, bean_class, status, cron_expression, params, 
+    remark, create_time, modify_time
+  </sql>
+
+
+    <!-- 查询所有的定时任务 -->
+    <select id="listAllJob" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from schedule_job
+    </select>
+
+    <!-- 更新定时任务状态 -->
+    <update id="updateJobStatusById" parameterType="ScheduleJob">
+        update schedule_job SET status = #{status} where id = #{id}
+    </update>
+
+    <!-- 根据主键查询定时任务 -->
+    <select id = "getScheduleJobByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> from schedule_job WHERE id = #{id}
+    </select>
+
+    <!-- 修改定时任务时间表达式 -->
+    <update id="updateJobCronExpressionById" parameterType="ScheduleJob">
+        UPDATE schedule_job SET cron_expression = #{cronExpression} where id = #{id}
+    </update>
+
+  <insert id="addScheduleJob" parameterType="ScheduleJob">
+    INSERT schedule_job
+    ( job_name, job_group, method_name, bean_class, status, cron_expression, params,
+    remark, create_time)
+    VALUE
+    (#{jobName}, #{jobGroup}, #{methodName}, #{beanClass}, #{status}, #{cronExpression}, #{params},
+    #{remark},now())
+  </insert>
+</mapper>

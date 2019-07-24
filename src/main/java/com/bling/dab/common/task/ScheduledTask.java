@@ -32,7 +32,7 @@ public class ScheduledTask {
     /**
      * 固定间隔任务
      */
-    @Scheduled(fixedRate = 1000 * 30)
+    @Scheduled(fixedRate = 10000 * 30)
     public void fixedRateCurrentTime(){
         System.out.println ("Scheduling fixedRateTasks Examples: The time is now " + dateFormat ().format (new Date ()));
     }
@@ -40,14 +40,14 @@ public class ScheduledTask {
     /**
      * 固定频率任务
      */
-    @Scheduled(fixedDelay = 1000 * 30)
+    @Scheduled(fixedDelay = 10000 * 30)
     public void fixedDelayCurrentTime(){
         System.out.println ("Scheduling fixedDelayTasks Examples: The time is now " + dateFormat ().format (new Date ()));
     }
     /**
      * 每1分钟执行一次
      */
-    @Scheduled(cron = "*/10 * *  * * * ")
+    @Scheduled(cron = "*/100 * *  * * * ")
     public void reportCurrentByCron(){
 
         RedisUtil redisUtil = RedisUtil.getInstance(redisConfig);
