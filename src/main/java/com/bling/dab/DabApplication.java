@@ -19,25 +19,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableTransactionManagement
 @MapperScan("com.bling.dab.dao")
-public class DabApplication extends SpringBootServletInitializer {
+public class DabApplication {
 
 
     //打jar
-//    public static void main(String[] args) {
-//        SpringApplication.run(DabApplication.class, args);
-//        System.out.println("dab启动完成--------");
-//    }
-
-    //打war
     public static void main(String[] args) {
         SpringApplication.run(DabApplication.class, args);
         System.out.println("dab启动完成--------");
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder){
-        return applicationBuilder.sources(DabApplication.class);
-    }
 
 }
 
